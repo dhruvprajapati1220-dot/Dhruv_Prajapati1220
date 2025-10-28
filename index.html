@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dhruv Prajapati | Mechanical Engineer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e1a;
+            --bg-secondary: #151a2b;
+            --bg-card: #1a1f35;
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: #2d3548;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #e2e8f0 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            min-height: 120px;
+        }
+
+        /* Section */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        section .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+            border-color: var(--accent);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background-color: #1a1f35;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #1a1f35;
+        }
+
+        .project-image.hvac { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .project-image.heatsink { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .project-image.catapult { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .project-image.matlab { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .project-image.cad { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .project-image.math { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(255,255,255,0.03) 10px,
+                rgba(255,255,255,0.03) 20px
+            );
+        }
+
+        .image-placeholder {
+            text-align: center;
+            color: white;
+            z-index: 1;
+        }
+
+        .image-placeholder-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .image-placeholder-text {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .project-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .tag {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-category {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .skill-category:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .skill-category h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-icon {
+            font-size: 1.5rem;
+        }
+
+        .skill-category ul {
+            list-style: none;
+        }
+
+        .skill-category li {
+            padding: 0.6rem 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .skill-category li:last-child {
+            border-bottom: none;
+        }
+
+        /* About Section */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .profile-placeholder {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, #7c3aed 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+            border: 3px solid var(--accent);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 2rem;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-content p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typing Effect */
+        .typing-text {
+            display: inline;
+            border-right: 2px solid var(--accent);
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { border-color: var(--accent); }
+            51%, 100% { border-color: transparent; }
+        }
+
+        /* Hero Search Bar */
+        .hero-search {
+            max-width: 600px;
+            margin: 2rem auto 0;
+            position: relative;
+        }
+
+        .hero-search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(26, 31, 53, 0.8);
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            gap: 1rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .hero-search-container:hover {
+            border-color: var(--accent);
+            background: rgba(26, 31, 53, 0.95);
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+        }
+
+        .hero-search-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .hero-search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            outline: none;
+            pointer-events: none;
+        }
+
+        /* Chatbot Styles */
+        .chat-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, #7c3aed 100%);
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(59, 130, 246, 0.6);
+        }
+
+        .chat-container {
+            position: fixed;
+            bottom: 5rem;
+            right: 2rem;
+            width: 380px;
+            height: 550px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .chat-container.active {
+            display: flex;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--accent) 0%, #7c3aed 100%);
+            padding: 1.2rem;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .chat-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .chat-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+
+        .message {
+            display: flex;
+            gap: 0.8rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.bot {
+            align-self: flex-start;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent) 0%, #7c3aed 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+            color: white;
+            font-weight: bold;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .message-content {
+            max-width: 70%;
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .message.bot .message-content {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user .message-content {
+            background: var(--accent);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.8rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chat-input:focus {
+            border-color: var(--accent);
+        }
+
+        .chat-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .chat-send {
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .chat-send:hover {
+            background: var(--accent-hover);
+        }
+
+        .chat-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 0.8rem 1rem;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .projects-grid,
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            section {
+                padding: 3rem 1rem;
+            }
+
+            .chat-container {
+                width: calc(100vw - 2rem);
+                height: 70vh;
+                right: 1rem;
+                bottom: 5rem;
+            }
+
+            .chat-button {
+                right: 1rem;
+                bottom: 1rem;
+            }
+        }
+
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Upload Notice */
+        .upload-notice {
+            background: rgba(59, 130, 246, 0.1);
+            border: 2px dashed var(--accent);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem auto;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .upload-notice h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-notice p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Project Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(5px);
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            max-width: 900px;
+            width: 90%;
+            margin: 2rem;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            margin: 0;
+            text-align: left;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-secondary);
+            color: var(--accent);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .modal-body h3 {
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .modal-body p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .modal-body ul {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-left: 1.5rem;
+        }
+
+        .modal-body ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .project-card {
+            position: relative;
+        }
+
+        .project-card::after {
+            content: '→';
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--accent);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .project-card:hover::after {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <div class="logo">Dhruv Prajapati</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="Dhruv_Semiconductor_CV.pdf" download class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Resume</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Dhruv Prajapati</h1>
+            <div class="subtitle">Mechanical Engineering Student</div>
+            <p class="description" id="typingText">
+                <span class="typing-text"></span>
+            </p>
+            
+            <!-- Hero Search Bar -->
+            <div class="hero-search">
+                <div class="hero-search-container" onclick="openChatFromHero()">
+                    <span class="hero-search-icon">&#129302;</span>
+                    <input 
+                        type="text" 
+                        class="hero-search-input" 
+                        placeholder="Search Dhruv, ask questions..." 
+                        readonly
+                    >
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <a href="#projects" class="btn">View Projects</a>
+                <a href="#contact" class="btn btn-outline">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Showcase Image -->
+    <div style="margin: 3rem 0; text-align: center;">
+        <img src="car.jpg" alt="CAD Project Showcase" style="width: 50%; display: inline-block; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
+    </div>
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <h2>My Professional Journey</h2>
+        <p class="section-subtitle">Real-world experience applying engineering principles to complex challenges</p>
+        
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3><span class="skill-icon">&#127981;</span> MKS & LAM Research</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Semiconductor Manufacturing</p>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                    Performed SolidWorks Flow Simulation on pulsed DC heat sink designs. Validated CFD results through comprehensive 
+                    lab testing and pressure drop analysis to support new product development for semiconductor fabrication equipment.
+                </p>
+            </div>
+            
+            <div class="skill-category">
+                <h3><span class="skill-icon">&#128295;</span> Industrial HVAC Analysis</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">R&D Service Department</p>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                    Diagnosed insufficient flow rate issues using Bernoulli's Principle and ultrasonic flow meters. 
+                    Identified system inefficiencies and provided actionable recommendations for pump optimization.
+                </p>
+            </div>
+            
+            <div class="skill-category">
+                <h3><span class="skill-icon">&#127891;</span> Rochester Institute of Technology</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Mechanical Engineering Student</p>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                    Conducting applied engineering research in structural optimization, fluid dynamics, and mathematical modeling. 
+                    Developing expertise in FEA, CFD, and advanced CAD design principles.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <h2>Featured Projects</h2>
+        <p class="section-subtitle">Showcasing engineering solutions from concept to validation</p>
+        
+        <div class="projects-grid">
+            
+            <!-- Silver Armored Connector -->
+            <div class="project-card" onclick="openModal('silverConnector')">
+                <div class="project-image">
+                    <img src="silver.png" alt="Silver Armored Connector">
+                </div>
+                <div class="project-content">
+                    <h3>Silver Armored Connector</h3>
+                    <p>Reverse engineered 7-part assembly with complete CAD modeling, shop drawings, BOM, and FEA. Enhanced design efficiency by 10% through 3D printing prototype.</p>
+                    <div class="tags">
+                        <span class="tag">Reverse Engineering</span>
+                        <span class="tag">SolidWorks</span>
+                        <span class="tag">FEA</span>
+                        <span class="tag">3D Printing</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pulsed DC Heat Sink -->
+            <div class="project-card" onclick="openModal('heatSink')">
+                <div class="project-image">
+                    <img src="heat.jpg" alt="Pulsed DC Heat Sink">
+                </div>
+                <div class="project-content">
+                    <h3>Pulsed DC Heat Sink Design</h3>
+                    <p>SolidWorks Flow Simulation for MKS semiconductor fabrication. Validated CFD with lab testing for pressure drop analysis supporting new product development.</p>
+                    <div class="tags">
+                        <span class="tag">SolidWorks CFD</span>
+                        <span class="tag">Lab Testing</span>
+                        <span class="tag">Semiconductor</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HVAC Flow Analysis -->
+            <div class="project-card" onclick="openModal('hvac')">
+                <div class="project-image">
+                    <img src="5.jpg" alt="HVAC Loop Flow Analysis">
+                </div>
+                <div class="project-content">
+                    <h3>HVAC Loop Flow Analysis</h3>
+                    <p>Diagnosed 196 GPM vs 400 GPM shortfall using Bernoulli's Principle and ultrasonic flow meters. Reduced project costs through innovative equipment selection.</p>
+                    <div class="tags">
+                        <span class="tag">Fluid Mechanics</span>
+                        <span class="tag">Flow Analysis</span>
+                        <span class="tag">Cost Optimization</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FEA Catapult -->
+            <div class="project-card" onclick="openModal('catapult')">
+                <div class="project-image">
+                    <img src="cata.png" alt="3D-Printed Catapult">
+                </div>
+                <div class="project-content">
+                    <h3>3D-Printed Catapult Optimization</h3>
+                    <p>FEA-driven design achieving 320-inch launch distance with strength-to-weight ratio of 626. Iterated through 2 design cycles with physical validation.</p>
+                    <div class="tags">
+                        <span class="tag">FEA</span>
+                        <span class="tag">3D Printing</span>
+                        <span class="tag">Optimization</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MATLAB Lunar Lander -->
+            <div class="project-card" onclick="openModal('matlab')">
+                <div class="project-image">
+                    <img src="Designer.png" alt="MATLAB Lunar Lander">
+                </div>
+                <div class="project-content">
+                    <h3>MATLAB Lunar Lander Simulation</h3>
+                    <p>Physics-based interactive simulation with real-time kinematics, optimized to achieve landing trajectory within 5% error margin.</p>
+                    <div class="tags">
+                        <span class="tag">MATLAB</span>
+                        <span class="tag">Physics Simulation</span>
+                        <span class="tag">GUI</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CAD Models -->
+            <div class="project-card" onclick="openModal('cad')">
+                <div class="project-image">
+                    <img src="solid.jpg" alt="SolidWorks CAD Portfolio">
+                </div>
+                <div class="project-content">
+                    <h3>SolidWorks CAD Portfolio</h3>
+                    <p>Comprehensive designs: car tire assembly, battery system, mini UGV prototype, and automotive model with complete technical drawings.</p>
+                    <div class="tags">
+                        <span class="tag">SolidWorks</span>
+                        <span class="tag">CAD Modeling</span>
+                        <span class="tag">Assembly Design</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Epitrochoid -->
+            <div class="project-card" onclick="openModal('epitrochoid')">
+                <div class="project-image">
+                    <img src="epitro.jpg" alt="Epitrochoid Analysis">
+                </div>
+                <div class="project-content">
+                    <h3>Epitrochoid Mathematical Analysis</h3>
+                    <p>Parametric curve modeling for gear design and rotary engines. Analyzed periodic motion and kinematic systems.</p>
+                    <div class="tags">
+                        <span class="tag">Mathematical Modeling</span>
+                        <span class="tag">Kinematics</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accelerometer & Strain Gauge -->
+            <div class="project-card" onclick="openModal('accelerometer')">
+                <div class="project-image">
+                    <img src="acce.png" alt="Accelerometer & Strain Gauge">
+                </div>
+                <div class="project-content">
+                    <h3>Accelerometer & Strain Gauge</h3>
+                    <p>Engineering measurements lab project utilizing accelerometer and strain gauge sensors for data acquisition and analysis.</p>
+                    <div class="tags">
+                        <span class="tag">Lab Testing</span>
+                        <span class="tag">Sensors</span>
+                        <span class="tag">Data Acquisition</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thermocouple VI -->
+            <div class="project-card" onclick="openModal('thermocouple')">
+                <div class="project-image">
+                    <img src="thermo.jpg" alt="Thermocouple VI">
+                </div>
+                <div class="project-content">
+                    <h3>Thermocouple VI</h3>
+                    <p>LabVIEW virtual instrument for thermocouple temperature measurement and data logging in engineering measurements.</p>
+                    <div class="tags">
+                        <span class="tag">LabVIEW</span>
+                        <span class="tag">Temperature</span>
+                        <span class="tag">Instrumentation</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pressure Sensor VI -->
+            <div class="project-card" onclick="openModal('pressure')">
+                <div class="project-image">
+                    <img src="pressure.jpg" alt="Pressure Sensor VI">
+                </div>
+                <div class="project-content">
+                    <h3>Pressure Sensor VI</h3>
+                    <p>LabVIEW virtual instrument for pressure sensor calibration and measurement in controlled environments.</p>
+                    <div class="tags">
+                        <span class="tag">LabVIEW</span>
+                        <span class="tag">Pressure</span>
+                        <span class="tag">Calibration</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mechanical Encoder LED -->
+            <div class="project-card" onclick="openModal('encoder')">
+                <div class="project-image">
+                    <img src="meche.png" alt="Mechanical Encoder LED">
+                </div>
+                <div class="project-content">
+                    <h3>Mechanical Encoder LED</h3>
+                    <p>Rotary encoder project with LED feedback system for position tracking and control applications.</p>
+                    <div class="tags">
+                        <span class="tag">Controls</span>
+                        <span class="tag">Encoders</span>
+                        <span class="tag">Electronics</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills">
+        <h2>Technical Skills & Tools</h2>
+        <p class="section-subtitle">Comprehensive engineering toolkit for analysis and design</p>
+        
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3><span class="skill-icon">&#128421;</span> CAD Software</h3>
+                <ul>
+                    <li>SolidWorks (Advanced)</li>
+                    <li>Part & Assembly Modeling</li>
+                    <li>Technical Drawings</li>
+                    <li>Design for Manufacturing</li>
+                </ul>
+            </div>
+            
+            <div class="skill-category">
+                <h3><span class="skill-icon">&#128202;</span> Analysis Tools</h3>
+                <ul>
+                    <li>FEA (Finite Element Analysis)</li>
+                    <li>CFD (Computational Fluid Dynamics)</li>
+                    <li>SolidWorks Flow Simulation</li>
+                    <li>Structural Analysis</li>
+                </ul>
+            </div>
+            
+            <div class="skill-category">
+                <h3><span class="skill-icon">&#128187;</span> Programming</h3>
+                <ul>
+                    <li>MATLAB (Advanced)</li>
+                    <li>Python Scripting</li>
+                    <li>Algorithm Development</li>
+                    <li>Data Analysis</li>
+                </ul>
+            </div>
+            
+            <div class="skill-category">
+                <h3><span class="skill-icon">&#9881;</span> Engineering</h3>
+                <ul>
+                    <li>GD&T (Geometric Dimensioning)</li>
+                    <li>Root Cause Analysis (RCA)</li>
+                    <li>Prototyping & Testing</li>
+                    <li>Controls Engineering</li>
+                </ul>
+            </div>
+            
+            <div class="skill-category">
+                <h3><span class="skill-icon">&#128300;</span> Lab & Testing</h3>
+                <ul>
+                    <li>Accelerometer & Strain Gauge</li>
+                    <li>Thermocouple Measurement</li>
+                    <li>Pressure Sensors</li>
+                    <li>Mechanical Encoders</li>
+                </ul>
+            </div>
+            
+            <div class="skill-category">
+                <h3><span class="skill-icon">&#127981;</span> Industries</h3>
+                <ul>
+                    <li>Automotive Design</li>
+                    <li>Aerospace Engineering</li>
+                    <li>Semiconductor Manufacturing</li>
+                    <li>HVAC Systems</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>About Me</h2>
+        <p class="section-subtitle">From rural India to cutting-edge engineering</p>
+        
+        <div class="about-content">
+            <div class="profile-section">
+                <img src="dhruv.jpeg" alt="Dhruv Prajapati" class="profile-photo">
+                <div class="about-text">
+                    <p>
+                        Hi there! My name is <span class="highlight">Dhruv Prajapati</span> and I'm currently in my junior year 
+                        as a mechanical engineering student at Rochester Institute of Technology.
+                    </p>
+                    <p>
+                        My childhood was spent in a farming village in India, where my engineering journey began with taking apart 
+                        old toys and rebuilding them using motors, scrap plastic, and wood. Those early discoveries sparked a passion 
+                        that continues to drive me today.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="about-text">
+                <p>
+                    Currently, I'm harnessing that passion by designing and modeling projects in the <strong>automobile, aerospace, 
+                    and semiconductor industries</strong>. I've had the opportunity to work with companies like <strong>MKS and 
+                    LAM Research</strong>, applying advanced analysis techniques to real-world engineering challenges.
+                </p>
+                <p>
+                    My approach combines theoretical knowledge with hands-on problem-solving, whether I'm optimizing HVAC systems 
+                    using fluid dynamics, validating CFD simulations in the lab, or designing 3D-printed components with FEA.
+                </p>
+                <p style="margin-top: 2rem;">
+                    <strong>My journey from rural India to cutting-edge engineering is just getting started.</strong>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Let's Connect</h2>
+        <p class="section-subtitle">Discuss your next project or opportunity</p>
+        
+        <div class="contact-content">
+            <p>
+                Feel free to reach out to discuss new projects, creative ideas, or opportunities. 
+                I'm always excited to explore new engineering challenges.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <a href="Dhruv_Semiconductor_CV.pdf" download class="btn">Download Resume</a>
+                <a href="mailto:ddp8909@rit.edu" class="btn btn-outline">Send Email</a>
+            </div>
+            <p style="margin-top: 2rem; font-size: 0.95rem;">
+                Rochester, NY, USA | +1 (520) 390-4462
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Dhruv Prajapati. All rights reserved.</p>
+        <p style="font-size: 0.9rem;">Mechanical Engineering &#8226; CAD &#8226; FEA &#8226; CFD</p>
+    </footer>
+
+    <!-- Project Modals -->
+    <div id="silverConnector" class="modal" onclick="closeModalOnBackdrop(event, 'silverConnector')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Silver Armored Connector - Reverse Engineering</h2>
+                <button class="modal-close" onclick="closeModal('silverConnector')">×</button>
+            </div>
+            <div class="modal-body">
+                <h3>Project Overview</h3>
+                <p><strong>Duration:</strong> April 2024 - May 2024</p>
+                <p>Complete reverse engineering project assessing drawing principles and practices through disassembly and redesign of a silver armored connector assembly.</p>
+                
+                <h3>Key Components</h3>
+                <p>The Silver Armoured Connector is a multifaceted assembly comprising <strong>7 distinct parts</strong>, each with varying materials, sizes, weights, and costs. The middle iron alloy part serves as the backbone sustaining the entire assembly's functionality.</p>
+                
+                <h3>Project Scope</h3>
+                <ul>
+                    <li><strong>Reverse Engineering:</strong> Complete disassembly and measurement of all components using Vernier calipers</li>
+                    <li><strong>CAD Modeling:</strong> Created 3D solid models and assemblies in SolidWorks with isometric and hidden line views</li>
+                    <li><strong>Shop Drawings:</strong> Comprehensive technical drawings with dimensions and tolerances</li>
+                    <li><strong>Bill of Materials:</strong> Documented parts, materials, weights, and costs for entire assembly</li>
+                    <li><strong>FEA Analysis:</strong> Applied 50 lbs external load to test structural integrity of iron alloy component</li>
+                    <li><strong>Factor of Safety:</strong> Calculated stress, displacement, and strain values using default mesh</li>
+                    <li><strong>3D Printing:</strong> Fabricated prototype with 10% efficiency improvement over original design</li>
+                </ul>
+                
+                <h3>Challenges & Solutions</h3>
+                <p><strong>Measurement Accuracy:</strong> Maintained all dimensions within 5% error through systematic error analysis of Vernier caliper measurements.</p>
+                <p><strong>Complex Geometry:</strong> The black poly-plastic component featured intricate fillets, cuts, and screws. Replicated exterior accurately and made informed assumptions for interior components with TA assistance.</p>
+                <p><strong>Time Constraints:</strong> Some very small dimensions required assumptions due to project timeline limitations.</p>
+                
+                <h3>Results</h3>
+                <p>Successfully completed comprehensive reverse engineering documentation including:</p>
+                <ul>
+                    <li>3D isometric assembly views</li>
+                    <li>Hidden line drawings showing internal complexities</li>
+                    <li>Exploded assembly views with part callouts</li>
+                    <li>Complete FEA validation with stress, strain, and displacement analysis</li>
+                    <li>Enhanced prototype design with 10% efficiency improvement</li>
+                </ul>
+                
+                <div class="tags" style="margin-top: 2rem;">
+                    <span class="tag">Reverse Engineering</span>
+                    <span class="tag">SolidWorks</span>
+                    <span class="tag">FEA</span>
+                    <span class="tag">3D Printing</span>
+                    <span class="tag">Technical Drawings</span>
+                    <span class="tag">BOM</span>
+                    <span class="tag">GD&T</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Heat Sink Modal -->
+    <div id="heatSink" class="modal" onclick="closeModalOnBackdrop(event, 'heatSink')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Pulsed DC Heat Sink Design</h2>
+                <button class="modal-close" onclick="closeModal('heatSink')">×</button>
+            </div>
+            <div class="modal-body">
+                <h3>Project Overview</h3>
+                <p><strong>Duration:</strong> Aug 2025 - Dec 2025<br>
+                <strong>Company:</strong> MKS Instruments Inc.</p>
+                
+                <p>Performed comprehensive SolidWorks Flow Simulation on pulsed DC heat sink design for semiconductor fabrication equipment supporting new product development at MKS.</p>
+                
+                <h3>Methodology</h3>
+                <ul>
+                    <li><strong>CFD Simulation:</strong> SolidWorks Flow Simulation for thermal and fluid analysis of heat sink geometry</li>
+                    <li><strong>Lab Testing:</strong> Physical validation using heat sink, chiller, flow meter, and pressure gauges</li>
+                    <li><strong>Pressure Drop Analysis:</strong> Compared experimental vs simulated pressure drop data across flow rates</li>
+                    <li><strong>Data Validation:</strong> Excel analysis of test results to validate CFD predictions</li>
+                    <li><strong>Documentation:</strong> Comprehensive reporting for engineering review and customer presentation</li>
+                </ul>
+                
+                <h3>Technical Details</h3>
+                <p>Analyzed pulsed DC power heat sink performance under various operating conditions relevant to semiconductor fabrication processes. Work involved:</p>
+                <ul>
+                    <li>Setting up CFD boundary conditions matching real operating parameters</li>
+                    <li>Designing and executing lab test procedures with calibrated instruments</li>
+                    <li>Statistical comparison of simulation vs experimental data</li>
+                    <li>Identifying discrepancies and refining simulation parameters</li>
+                </ul>
+                
+                <h3>Impact</h3>
+                <p>Provided critical validation data to support new product development for LAM Research, MKS's biggest customer in semiconductor fabrication equipment. Results informed design decisions for production units.</p>
+                
+                <p style="margin-top: 2rem;"><em>Note: Due to confidentiality agreements with MKS Instruments and LAM Research, detailed visuals and specific performance data cannot be shared publicly.</em></p>
+                
+                <div class="tags" style="margin-top: 2rem;">
+                    <span class="tag">SolidWorks CFD</span>
+                    <span class="tag">Lab Testing</span>
+                    <span class="tag">Semiconductor</span>
+                    <span class="tag">Pressure Analysis</span>
+                    <span class="tag">MKS Instruments</span>
+                    <span class="tag">Data Validation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HVAC Modal -->
+    <div id="hvac" class="modal" onclick="closeModalOnBackdrop(event, 'hvac')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>HVAC Loop Flow Analysis</h2>
+                <button class="modal-close" onclick="closeModal('hvac')">×</button>
+            </div>
+            <div class="modal-body">
+                <h3>Problem Statement</h3>
+                <p>The R&D service/life-test area was observing insufficient flow rate for each load station. Loop 7 needed increased flow rate to support additional loads added to the system.</p>
+                
+                <h3>Initial Conditions</h3>
+                <ul>
+                    <li><strong>Current Flow Rate:</strong> 196 GPM (only 10 GPM higher than previous February survey)</li>
+                    <li><strong>Required Flow Rate:</strong> 8-10 GPM per load station minimum</li>
+                    <li><strong>Pump Capacity:</strong> 400 GPM rated capacity (Pump 7)</li>
+                    <li><strong>Connected Loops:</strong> Loops 15 and 16 also derived water from Loop 7</li>
+                    <li><strong>Filter Status:</strong> 4 filter bags total, only 2 currently working</li>
+                </ul>
+                
+                <h3>Analysis Approach</h3>
+                <p><strong>Applied Bernoulli's Principle</strong> for comprehensive fluid flow analysis with assumptions:</p>
+                <ul>
+                    <li>Transient flow conditions throughout system</li>
+                    <li>Incompressible fluid (water density constant)</li>
+                    <li>Pump performance maximized at 400 GPM rated capacity</li>
+                    <li>Pump elevation z₁=z₂=0 (negligible elevation change)</li>
+                    <li>No current filter degradation issues</li>
+                </ul>
+                
+                <h3>Innovation: Ultrasonic Flow Meter Solution</h3>
+                <p>Loops 15 and 16 had 3-inch pipes without existing flow meters. Traditional insertion-type meters would require:</p>
+                <ul>
+                    <li>Cutting into pipes (costly and time-consuming)</li>
+                    <li>Multiple permanent installations</li>
+                    <li>Special orders for 3-inch pipe compatibility</li>
+                </ul>
+                
+                <p><strong>Solution:</strong> Selected <strong>BlueBot ultrasonic clamp-on flow meters</strong> that:</p>
+                <ul>
+                    <li>Attach externally without pipe modification</li>
+                    <li>Are portable - one meter could measure multiple locations</li>
+                    <li>Significantly reduced project costs vs multiple fixed meters</li>
+                    <li>Provided cloud-based data storage via WiFi</li>
+                </ul>
+                
+                <h3>Implementation Challenges</h3>
+                <p><strong>Installation Delay:</strong> BlueBot claimed 3-minute setup, but actual installation took 3 days because:</p>
+                <ul>
+                    <li>IT needed to reset device MAC address</li>
+                    <li>Device required whitelisting for network connectivity</li>
+                    <li>Cloud data storage needed network configuration</li>
+                </ul>
+                
+                <h3>Key Findings</h3>
+                <ul>
+                    <li><strong>Loops 15 & 16 Flow:</strong> Only ~25 GPM average (much lower than expected ~200 GPM)</li>
+                    <li><strong>Total System Flow:</strong> Approximately 221 GPM (196 GPM service + 25 GPM loops)</li>
+                    <li><strong>Pump Performance:</strong> Only 55% of rated 400 GPM capacity being delivered</li>
+                    <li><strong>Root Cause:</strong> System restrictions preventing pump from achieving rated flow</li>
+                </ul>
+                
+                <h3>Impact</h3>
+                <p>Analysis provided clear evidence of system underperformance and identified that connected loops were not the primary cause of insufficient flow. Recommended further investigation of pump condition, system restrictions, and potential cavitation issues.</p>
+                
+                <div class="tags" style="margin-top: 2rem;">
+                    <span class="tag">Fluid Mechanics</span>
+                    <span class="tag">Bernoulli's Principle</span>
+                    <span class="tag">Flow Analysis</span>
+                    <span class="tag">Ultrasonic Flow Meters</span>
+                    <span class="tag">Cost Optimization</span>
+                    <span class="tag">MKS Instruments</span>
+                    <span class="tag">Root Cause Analysis</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Catapult Modal -->
+    <div id="catapult" class="modal" onclick="closeModalOnBackdrop(event, 'catapult')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>3D-Printed Catapult Optimization</h2>
+                <button class="modal-close" onclick="closeModal('catapult')">×</button>
+            </div>
+            <div class="modal-body">
+                <h3>Project Objectives</h3>
+                <p>Design and manufacture a 3D-printed catapult arm that maximizes both launch distance and strength-to-weight ratio while maintaining structural integrity during cantilever beam bending tests.</p>
+                
+                <h3>Design Constraints</h3>
+                <ul>
+                    <li><strong>Distance between holes:</strong> 40 mm (fixed)</li>
+                    <li><strong>Height of hole:</strong> 11.25 mm (fixed)</li>
+                    <li><strong>Hole diameter:</strong> 5 mm (fixed)</li>
+                    <li><strong>Support leg thickness:</strong> 8.5 mm (fixed)</li>
+                    <li><strong>Total length:</strong> 175 mm maximum</li>
+                    <li><strong>Single rubber band power source</strong></li>
+                </ul>
+                
+                <h3>Design Methodology</h3>
+                <p><strong>Key Factors Analyzed:</strong></p>
+                <ul>
+                    <li>Overall arm length optimization</li>
+                    <li>Pivot point to catapult head distance</li>
+                    <li>Neck section thickness</li>
+                    <li>Neck section length</li>
+                    <li>Material distribution for weight optimization</li>
+                </ul>
+                
+                <p><strong>Design Trade-offs Considered:</strong></p>
+                <ul>
+                    <li><strong>Shorter neck:</strong> Less launch distance but better structural integrity</li>
+                    <li><strong>Thicker neck:</strong> More strength but increased weight to accelerate</li>
+                    <li><strong>Longer pivot-to-head:</strong> Greater mechanical advantage but more stress concentration</li>
+                    <li><strong>Cross-sectional area:</strong> Balance between strength and aerodynamic drag</li>
+                </ul>
+                
+                <h3>FEA Analysis Process</h3>
+                <p>Used finite element analysis to predict:</p>
+                <ul>
+                    <li>Stress concentrations under launching forces</li>
+                    <li>Deflection during cantilever bending test</li>
+                    <li>Factor of safety for critical sections</li>
+                    <li>Optimal material distribution</li>
+                </ul>
+                
+                <h3>Test Results</h3>
+                <p><strong>Design Iteration 1:</strong></p>
+                <ul>
+                    <li>Max Launch Distance: 310 inches</li>
+                    <li>Strength/Weight Ratio: 740.22</li>
+                    <li>Performance: Baseline design</li>
+                </ul>
+                
+                <p><strong>Design Iteration 2 (Final):</strong></p>
+                <ul>
+                    <li>Max Launch Distance: <strong>320 inches</strong> (projectile hit the wall!)</li>
+                    <li>Strength/Weight Ratio: <strong>626.07</strong></li>
+                    <li>Distance improvement: +10 inches (+3.2%)</li>
+                    <li>Weight increase: +15%</li>
+                    <li>Structural improvement: Survived bending test with higher load</li>
+                </ul>
+                
+                <h3>Key Findings</h3>
+                <p><strong>Launch Distance Maximization:</strong> Achieved through decreased cross-sectional area in non-critical regions, contributing to:</p>
+                <ul>
+                    <li>Lower aerodynamic drag during launch</li>
+                    <li>Reduced rotational inertia</li>
+                    <li>More efficient energy transfer from rubber band</li>
+                </ul>
+                
+                <p><strong>Strength Optimization:</strong> 15% weight increase was strategically justified by:</p>
+                <ul>
+                    <li>Reinforcement at high-stress locations identified in FEA</li>
+                    <li>Optimized 3D printing parameters (perimeters, layers, infill)</li>
+                    <li>Improved structural reliability and test survivability</li>
+                </ul>
+                
+                <h3>3D Printing Parameters</h3>
+                <ul>
+                    <li><strong>Perimeter count:</strong> Optimized for outer shell strength</li>
+                    <li><strong>Layer height:</strong> Balanced for strength and print time</li>
+                    <li><strong>Infill percentage:</strong> Variable density based on stress analysis</li>
+                    <li><strong>Infill pattern:</strong> Selected for directional strength</li>
+                </ul>
+                
+                <h3>Conclusions</h3>
+                <p>Project achieved <strong>95% success rate</strong> in deriving the most efficient catapult arm design. Successfully demonstrated:</p>
+                <ul>
+                    <li>Integration of CAD modeling, FEA simulation, and physical testing</li>
+                    <li>Iterative design improvement based on analytical and empirical data</li>
+                    <li>Trade-off optimization between projectile performance and structural strength</li>
+                    <li>Validation of lightweight structure design principles</li>
+                </ul>
+                
+                <div class="tags" style="margin-top: 2rem;">
+                    <span class="tag">FEA</span>
+                    <span class="tag">3D Printing</span>
+                    <span class="tag">Optimization</span>
+                    <span class="tag">Design Iteration</span>
+                    <span class="tag">Structural Testing</span>
+                    <span class="tag">CAD</span>
+                    <span class="tag">Mechanical Design</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MATLAB Modal -->
+    <div id="matlab" class="modal" onclick="closeModalOnBackdrop(event, 'matlab')">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2>MATLAB Lunar Lander Simulation</h2>
+                <button class="modal-close" onclick="closeModal('matlab')">×</button>
+            </div>
+            <div class="modal-body">
+                <h3>Project Overview</h3>
+                <p><strong>Duration:</strong> Oct 2024 - Dec 2024<br>
+                <strong>Course:</strong> MECE 117 - Intro to Programming for Engineers</p>
+                
+                <p>Developed comprehensive MATLAB simulation of lunar lander descent incorporating real physics principles and interactive gameplay mechanics with complete GUI implementation.</p>
+                
+                <h3>Physics Implementation</h3>
+                <p><strong>Lunar Environment Parameters:</strong></p>
+                <ul>
+                    <li><strong>Moon gravity:</strong> 1.62 m/s²</li>
+                    <li><strong>Moon radius:</strong> 1.738×10⁶ m</li>
+                    <li><strong>Time step:</strong> dt = 0.1 seconds for numerical integration</li>
+                </ul>
+                
+                <p><strong>Spacecraft Parameters:</strong></p>
+                <ul>
+                    <li><strong>Ship dimensions:</strong> 40m height × 40m width</li>
+                    <li><strong>Ship mass:</strong> 4,900 kg (dry)</li>
+                    <li><strong>Initial fuel mass:</strong> 10,300 kg</li>
+                    <li><strong>Maximum thrust:</strong> 45,000 N</li>
+                    <li><strong>Thrust increment:</strong> ΔT = 4,500 N per arrow key press</li>
+                </ul>
+                
+                <h3>Technical Features</h3>
+                <p><strong>Real-Time Physics Calculations:</strong></p>
+                <ul>
+                    <li><strong>Kinematics:</strong> Position and velocity updates using dt integration</li>
+                    <li><strong>Thrust mechanics:</strong> Variable thrust control with fuel consumption (5×10⁻³ × T × dt kg/s)</li>
+                    <li><strong>Rotational dynamics:</strong> Angle Q control for thrust vectoring</li>
+                    <li><strong>Gravity modeling:</strong> Constant lunar surface gravity</li>
+                    <li><strong>Centripetal force:</strong> Radial acceleration component for orbital effects</li>
+                </ul>
+                
+                <p><strong>Interactive Controls (Arrow Keys):</strong></p>
+                <ul>
+                    <li><strong>Up Arrow:</strong> Increase thrust by increment (if fuel available)</li>
+                    <li><strong>Down Arrow:</strong> Decrease thrust by increment</li>
+                    <li><strong>Right Arrow:</strong> Rotate ship clockwise by 2°</li>
+                    <li><strong>Left Arrow:</strong> Rotate ship counterclockwise by 2°</li>
+                </ul>
+                
+                <h3>Game Mechanics</h3>
+                <p><strong>Landing Success Conditions (ALL must be met):</strong></p>
+                <ul>
+                    <li><strong>Terrain:</strong> Landing on designated flat surface zones (specific x-coordinates)</li>
+                    <li><strong>Orientation:</strong> Ship upright within ±2° (|Q| ≤ 2°)</li>
+                    <li><strong>Vertical velocity:</strong> Low impact speed (Vy > -0.5 m/s)</li>
+                </ul>
+                
+                <p><strong>Failure Conditions:</strong></p>
+                <ul>
+                    <li>Landing on sloped terrain (too steep for safe landing)</li>
+                    <li>Excessive tilt angle (ship would tip over)</li>
+                    <li>Too high vertical velocity (crash impact)</li>
+                </ul>
+                
+                <h3>Advanced Implementation</h3>
+                <p><strong>GUI Development:</strong></p>
+                <ul>
+                    <li><strong>Title screen:</strong> Mission briefing and control instructions</li>
+                    <li><strong>Real-time displays:</strong> Fuel remaining, altitude, Vx, Vy, thrust magnitude</li>
+                    <li><strong>Visual feedback:</strong> Ship rotation rendering using rotation matrices</li>
+                    <li><strong>Terrain generation:</strong> Procedural moon surface with flat landing zones</li>
+                    <li><strong>Success/failure messages:</strong> Contextual feedback based on landing conditions</li>
+                </ul>
+                
+                <p><strong>Code Architecture:</strong></p>
+                <ul>
+                    <li><strong>Modular functions:</strong> create_fig, create_setting, create_ship, kinematics, evaluate</li>
+                    <li><strong>Event handling:</strong> WindowKeyPressFcn for keyboard input</li>
+                    <li><strong>State management:</strong> Global variables for game state persistence</li>
+                    <li><strong>Collision detection:</strong> Real-time terrain intersection checking</li>
+                </ul>
+                
+                <h3>Mathematical Models</h3>
+                <p><strong>Acceleration Calculations:</strong></p>
+                <ul>
+                    <li><strong>Weight force:</strong> Wy = mtot × (-gm)</li>
+                    <li><strong>Thrust components:</strong> Ty = T × cos(-Q), Tx = T × sin(-Q)</li>
+                    <li><strong>Centripetal acceleration:</strong> Cy = mtot × Vx² / (Rm+y)</li>
+                    <li><strong>Net accelerations:</strong> Ax = 100×Tx/mtot, Ay = 100×(Wy+Ty+Cy)/mtot</li>
+                </ul>
+                
+                <p><strong>Rotation Matrix Implementation:</strong></p>
+                <ul>
+                    <li>Real-time ship orientation using 2D rotation matrices</li>
+                    <li>Visual representation updates every frame</li>
+                    <li>Maintains ship geometry while rotating thrust vector</li>
+                </ul>
+                
+                <h3>Optimization Achievement</h3>
+                <p>Optimized code to achieve landing trajectory accuracy within <strong>5% error margin</strong> through:</p>
+                <ul>
+                    <li>Careful time step selection (dt = 0.1s)</li>
+                    <li>Accurate numerical integration methods</li>
+                    <li>Precision in physics calculations</li>
+                    <li>Validation against theoretical trajectories</li>
+                </ul>
+                
+                <h3>Try Again System</h3>
+                <ul>
+                    <li><strong>Reset functionality:</strong> Position, fuel, angle reset to initial values</li>
+                    <li><strong>Persistent terrain:</strong> Same moon surface for consistent challenge</li>
+                    <li><strong>Score tracking:</strong> Success messages include remaining fuel</li>
+                </ul>
+                
+                <div class="tags" style="margin-top: 2rem;">
+                    <span class="tag">MATLAB</span>
+                    <span class="tag">Physics Simulation</span>
+                    <span class="tag">GUI Development</span>
+                    <span class="tag">Kinematics</span>
+                    <span class="tag">Algorithm Optimization</span>
+                    <span class="tag">Game Development</span>
+                    <span class="tag">Numerical Methods</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chatbot -->
+    <button class="chat-button" id="chatButton" onclick="toggleChat()">&#128172;</button>
+    
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h3>Ask me about Dhruv's work</h3>
+            <button class="chat-close" onclick="toggleChat()">×</button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+                <div class="message-avatar">&#129302;</div>
+                <div class="message-content">
+                    Hi! I'm Dhruv's AI assistant. I can answer questions about his projects, skills, and experience. What would you like to know?
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-input-container">
+            <input 
+                type="text" 
+                class="chat-input" 
+                id="chatInput" 
+                placeholder="Ask about projects, skills, experience..."
+                onkeypress="handleKeyPress(event)"
+            >
+            <button class="chat-send" id="sendButton" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Typing effect for hero description
+        const fullText = "Junior at Rochester Institute of Technology with expertise in CAD, FEA, CFD, and prototyping. Experienced in developing scalable engineering solutions across automotive, aerospace, and semiconductor industries. Skilled in SolidWorks, MATLAB, and Python with hands-on experience in design optimization, fluid dynamics analysis, and production-grade system development.";
+        
+        let charIndex = 0;
+        const typingElement = document.querySelector('.typing-text');
+        
+        function typeWriter() {
+            if (charIndex < fullText.length) {
+                typingElement.textContent = fullText.substring(0, charIndex + 1);
+                charIndex++;
+                setTimeout(typeWriter, 30);
+            } else {
+                typingElement.style.borderRight = 'none';
+            }
+        }
+        
+        window.addEventListener('load', () => {
+            setTimeout(typeWriter, 500);
+        });
+
+        function openChatFromHero() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.classList.add('active');
+            document.getElementById('chatInput').focus();
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModalOnBackdrop(event, modalId) {
+            if (event.target.classList.contains('modal')) {
+                closeModal(modalId);
+            }
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const activeModal = document.querySelector('.modal.active');
+                if (activeModal) {
+                    activeModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        });
+
+        // Portfolio knowledge base with all resume info
+        const portfolioData = {
+            name: "Dhruv Dilipkumar Prajapati",
+            role: "Mechanical Engineering Junior Student",
+            location: "Rochester, NY",
+            phone: "+1 (520) 390-4462",
+            email: "ddp8909@rit.edu",
+            linkedin: "www.linkedin.com/in/dhruv-prajapati1220",
+            
+            education: [
+                {
+                    degree: "Bachelor of Science in Mechanical Engineering",
+                    school: "Rochester Institute of Technology",
+                    gpa: "3.30",
+                    graduation: "December 2027"
+                },
+                {
+                    degree: "Bachelor of Science in Aerospace Engineering (Transferred)",
+                    school: "University of Arizona",
+                    gpa: "4.00",
+                    period: "Aug 2023 - May 2024"
+                }
+            ],
+            
+            awards: [
+                "RIT Founders International Scholarship (July 2025)",
+                "Academic Year Academic Distinction - U of Arizona (May 2024)",
+                "Dean's List with Distinction - U of Arizona (May 2024)",
+                "Global Wildcat Award - U of Arizona (Aug 2023)"
+            ]
+        };
+
+        function toggleChat() {
+            const container = document.getElementById('chatContainer');
+            container.classList.toggle('active');
+            if (container.classList.contains('active')) {
+                document.getElementById('chatInput').focus();
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function addMessage(content, isUser = false) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${isUser ? '&#128100;' : '&#129302;'}</div>
+                <div class="message-content">${content}</div>
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesDiv = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message bot';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">&#129302;</div>
+                <div class="message-content typing-indicator">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            messagesDiv.appendChild(typingDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+        }
+
+        function getBotResponse(userMessage) {
+            const msg = userMessage.toLowerCase();
+            
+            if (msg.match(/^(hi|hello|hey|greetings)/)) {
+                return "Hello! I'm Dhruv's AI assistant. I can answer questions about his projects, skills, experience, education, and awards. What would you like to know?";
+            }
+            
+            if (msg.includes('gpa') || msg.includes('grades')) {
+                return `Dhruv has an impressive academic record:\n\n• Current GPA at RIT: 3.30\n• Previous GPA at University of Arizona: 4.00 (perfect!)\n\nHe's received multiple academic honors including Dean's List with Distinction.`;
+            }
+            
+            if (msg.includes('award') || msg.includes('achievement') || msg.includes('scholarship')) {
+                return `Dhruv has earned several prestigious awards:\n\n${portfolioData.awards.map(a => `• ${a}`).join('\n')}\n\nHis perfect 4.0 GPA at University of Arizona demonstrates his academic excellence.`;
+            }
+            
+            if (msg.includes('contact') || msg.includes('email') || msg.includes('phone')) {
+                return `You can reach Dhruv at:\n\n&#128231; Email: ${portfolioData.email}\n&#128222; Phone: ${portfolioData.phone}\n&#128188; LinkedIn: ${portfolioData.linkedin}\n&#128205; Location: ${portfolioData.location}`;
+            }
+            
+            if (msg.includes('project')) {
+                return `Dhruv has worked on 11 impressive projects:\n\n• Silver Armored Connector (Reverse Engineering)\n• Pulsed DC Heat Sink (MKS)\n• HVAC Loop Flow Analysis\n• 3D-Printed Catapult (FEA)\n• MATLAB Lunar Lander\n• SolidWorks CAD Portfolio\n• Epitrochoid Analysis\n• Accelerometer & Strain Gauge\n• Thermocouple VI\n• Pressure Sensor VI\n• Mechanical Encoder LED\n\nAsk about any specific project!`;
+            }
+            
+            if (msg.includes('silver') || msg.includes('connector') || msg.includes('reverse')) {
+                return `Silver Armored Connector (April-May 2024):\n\nReverse engineered 7-part assembly with complete CAD modeling, shop drawings, BOM, and FEA analysis. Applied 50 lbs load testing and enhanced original design efficiency by 10% through 3D printing prototype.`;
+            }
+            
+            if (msg.includes('heat') || msg.includes('mks') || msg.includes('semiconductor')) {
+                return `Pulsed DC Heat Sink (Aug-Dec 2025):\n\nPerformed SolidWorks Flow Simulation for MKS Instruments. Validated CFD results through lab testing to support new product development for LAM Research.\n\nNote: Details are confidential due to NDA.`;
+            }
+            
+            if (msg.includes('hvac') || msg.includes('flow')) {
+                return `HVAC Loop Flow Analysis:\n\nDiagnosed insufficient flow rate (196 GPM vs 400 GPM) using Bernoulli's Principle. Implemented portable ultrasonic flow meters, reducing project costs. Identified Pump 7 achieving only 56% capacity.`;
+            }
+            
+            if (msg.includes('catapult') || msg.includes('fea')) {
+                return `3D-Printed Catapult Optimization:\n\nFEA-driven design achieving 320-inch launch distance with strength-to-weight ratio of 626. Iterated through 2 designs with 10-inch improvement and 15% weight increase.`;
+            }
+            
+            if (msg.includes('matlab') || msg.includes('lunar')) {
+                return `MATLAB Lunar Lander (Oct-Dec 2024):\n\nDeveloped physics-based simulation with gravity, thrust, and fuel consumption. Optimized code to achieve landing trajectory within 5% error margin!`;
+            }
+            
+            if (msg.includes('skill') || msg.includes('tool')) {
+                return `Dhruv's technical skills:\n\n• CAD: SolidWorks, CATIA v5, Ansys, ACAD\n• Analysis: FEA, CFD, DOE, RCA\n• Programming: MATLAB, Python, LabVIEW\n• Methodologies: Six Sigma, Lean, 6S\n\nWhat specific area interests you?`;
+            }
+            
+            if (msg.includes('experience') || msg.includes('work') || msg.includes('intern')) {
+                return `Dhruv's professional experience:\n\n1. Mechanical Engineering Intern at MKS Instruments (Aug-Dec 2025)\n2. IT Support Assistant at RIT (Aug 2024-July 2025)\n3. Apple Certified Technician (Aug 2023-May 2024)\n\nAsk about any specific role for details!`;
+            }
+            
+            if (msg.includes('education') || msg.includes('school') || msg.includes('rit')) {
+                return `Dhruv's education:\n\n🎓 ${portfolioData.education[0].degree}\n${portfolioData.education[0].school} | GPA: ${portfolioData.education[0].gpa}\nGraduating: ${portfolioData.education[0].graduation}\n\n🎓 ${portfolioData.education[1].degree}\n${portfolioData.education[1].school} | GPA: ${portfolioData.education[1].gpa}\n\nHe achieved a perfect 4.0 at U of Arizona!`;
+            }
+            
+            if (msg.includes('background') || msg.includes('story') || msg.includes('india')) {
+                return `Dhruv grew up in a farming village in India, where his engineering journey began with taking apart old toys and rebuilding them using motors and scrap materials. That childhood curiosity has evolved into expertise in CAD, FEA, and CFD, now working on cutting-edge semiconductor projects!`;
+            }
+            
+            if (msg.includes('looking for') || msg.includes('seeking') || msg.includes('hire')) {
+                return `Yes! Dhruv is seeking spring/summer 2026 co-op/internship in semiconductors, automotive, or aerospace. He brings expertise in CAD, FEA, CFD, Six Sigma, and hands-on experience from MKS.\n\nContact: ${portfolioData.email}`;
+            }
+            
+            return "I can help you learn about:\n\n• Projects & Experience\n• Skills & Tools\n• Education & Awards\n• Contact Information\n\nTry asking:\n• 'Tell me about his MKS internship'\n• 'What are his awards?'\n• 'What's his GPA?'\n• 'Show me his projects'\n\nWhat interests you?";
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessage(message, true);
+            input.value = '';
+            sendButton.disabled = true;
+            
+            showTypingIndicator();
+            await new Promise(resolve => setTimeout(resolve, 800));
+            removeTypingIndicator();
+            
+            const response = getBotResponse(message);
+            addMessage(response, false);
+            
+            sendButton.disabled = false;
+            input.focus();
+        }
+    </script>
+
+</body>
+</html>
