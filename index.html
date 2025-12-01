@@ -3587,6 +3587,85 @@ Try asking about any of these topics! For example:
 // Export the function for use in your website
 // Replace your existing getBotResponse function with this enhanced version
 console.log('Enhanced chatbot loaded successfully!');
+            // ===== Minimal sendMessage shim to fix missing reference =====
+    (function () {
+      // Prefer IDs used elsewhere in your file, fallback to common class names
+      const inputEl = document.getElementById('chatInput') || document.querySelector('.chat-input');
+      const sendBtn = document.getElementById('chatSend') || document.querySelector('.chat-send');
+      const messagesEl = document.getElementById('chatMessages') || document.querySelector('.chat-messages');
+
+      if (!inputEl || !sendBtn || !messagesEl) {
+        console.warn('chatbot-shim: one of chatInput / chatSend / chatMessages is missing; shim not installed.');
+        return;
+      }
+
+      // simple escape for user-provided text before inserting to DOM
+      function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function (m) {
+          return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]);
+        });
+      }
+
+      // Expose sendMessage globally so existing handleKeyPress() (or inline attributes) can call it.
+      window.sendMessage = async function sendMessage() {
+        // Read value (supports input/textarea.value or contentEditable.innerText)
+        let raw = (inputEl.value !== undefined) ? inputEl.value : (inputEl.innerText || '');
+        const text = String(raw).trim();
+        if (!text) return;
+
+        // Show user message
+        addMessage(escapeHtml(text), true);
+
+        // Clear input
+        if (inputEl.value !== undefined) inputEl.value = '';
+        else inputEl.innerText = '';
+
+        // Prevent double sends
+        sendBtn.disabled = true;
+
+        // Show typing UX
+        showTypingIndicator();
+
+        try {
+          const maybe = getBotResponse(text);
+          const reply = (maybe && typeof maybe.then === 'function') ? await maybe : maybe;
+          removeTypingIndicator();
+          addMessage(String(reply), false);
+        } catch (err) {
+          console.error('sendMessage error:', err);
+          removeTypingIndicator();
+          addMessage('Sorry — an error occurred while getting a response.');
+        } finally {
+          sendBtn.disabled = false;
+          inputEl.focus();
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+      };
+
+      // Attach handlers if not already present
+      if (!sendBtn._hasSendHandler) {
+        sendBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          window.sendMessage();
+        });
+        sendBtn._hasSendHandler = true;
+      }
+
+      if (!inputEl._hasEnterHandler) {
+        inputEl.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            window.sendMessage();
+          }
+        });
+        inputEl._hasEnterHandler = true;
+      }
+
+      // Ensure button won't submit a form accidentally
+      try { if (sendBtn.tagName === 'BUTTON') sendBtn.type = 'button'; } catch (e) {}
+
+      console.log('chatbot-shim: sendMessage installed and wired.');
+    })();
 
     // ===== OTHER FUNCTIONS =====
     
