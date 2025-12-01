@@ -3079,18 +3079,83 @@
     }
 
     function addMessage(content, isUser = false) {
-        const messagesDiv = document.getElementById('chatMessages');
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
-        
-        messageDiv.innerHTML = `
-            <div class="message-avatar">${isUser ? '&#128100;' : '&#129302;'}</div>
-            <div class="message-content">${content}</div>
-        `;
-        
-        messagesDiv.appendChild(messageDiv);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    // escape to avoid HTML injection
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function (m) {
+            return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]);
+        });
     }
+
+    const messagesDiv = document.getElementById('chatMessages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+
+    if (isUser) {
+        // user messages are rendered as plain escaped text
+        messageDiv.innerHTML = `
+            <div class="message-avatar">&#128100;</div>
+            <div class="message-content">${escapeHtml(content)}</div>
+        `;
+    } else {
+        // Bot messages: escape then do minimal markdown-like rendering
+        const escaped = escapeHtml(content);
+
+        // Split into lines and build HTML with list support
+        const lines = escaped.split(/\r\n|\r|\n/);
+        let rendered = '';
+        let inUl = false;
+        let inOl = false;
+
+        function closeLists() {
+            if (inUl) { rendered += '</ul>'; inUl = false; }
+            if (inOl) { rendered += '</ol>'; inOl = false; }
+        }
+
+        for (let rawLine of lines) {
+            const line = rawLine.trim();
+
+            if (line === '') {
+                // blank line: close lists and add paragraph break
+                closeLists();
+                rendered += '<br>';
+                continue;
+            }
+
+            const ulMatch = line.match(/^[-•]\s+(.*)/);
+            const olMatch = line.match(/^(\d+)\.\s+(.*)/);
+
+            if (ulMatch) {
+                if (!inUl) { closeLists(); rendered += '<ul>'; inUl = true; }
+                rendered += `<li>${ulMatch[1].replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</li>`;
+                continue;
+            }
+
+            if (olMatch) {
+                if (!inOl) { closeLists(); rendered += '<ol>'; inOl = true; }
+                rendered += `<li>${olMatch[2].replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')}</li>`;
+                continue;
+            }
+
+            // normal text line: close lists then render as paragraph text
+            closeLists();
+            // replace **bold**
+            const inline = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+            rendered += `<p style="margin:0 0 .4rem 0">${inline}</p>`;
+        }
+
+        // close any open lists at the end
+        if (inUl) rendered += '</ul>';
+        if (inOl) rendered += '</ol>';
+
+        messageDiv.innerHTML = `
+            <div class="message-avatar">&#129302;</div>
+            <div class="message-content">${rendered}</div>
+        `;
+    }
+
+    messagesDiv.appendChild(messageDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
 
     function showTypingIndicator() {
         const messagesDiv = document.getElementById('chatMessages');
