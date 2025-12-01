@@ -1342,6 +1342,130 @@
         display: none;
     }
 }
+        /* Statistics Counter Section */
+.stats-section {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(124, 58, 237, 0.1) 100%);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4rem 2rem;
+    margin: 4rem auto;
+    max-width: 1200px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1.5rem;
+    position: relative;
+    animation: fadeInUp 0.8s ease;
+}
+
+.stat-item::after {
+    content: '';
+    position: absolute;
+    right: -1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60%;
+    background: var(--border);
+}
+
+.stat-item:last-child::after {
+    display: none;
+}
+
+.stat-number {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent) 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.stat-label {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-sublabel {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.3rem;
+    opacity: 0.7;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+}
+
+/* Animation on scroll */
+.stat-item.animated .stat-number {
+    animation: countUp 2s ease-out;
+}
+
+@keyframes countUp {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .stats-section {
+        padding: 3rem 1.5rem;
+        margin: 3rem 1rem;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+    
+    .stat-item::after {
+        display: none;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .stat-label {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .stat-number {
+        font-size: 3rem;
+    }
+}
     </style>
 </head>
 <body>
@@ -1394,7 +1518,38 @@
             </div>
         </div>
     </section>
-
+    <!-- Statistics Counter Section -->
+    <div class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-item" data-target="11">
+            <div class="stat-icon">🚀</div>
+            <span class="stat-number">0</span>
+            <div class="stat-label">Projects</div>
+            <div class="stat-sublabel">Completed</div>
+        </div>
+        
+        <div class="stat-item" data-target="4.0">
+            <div class="stat-icon">🎓</div>
+            <span class="stat-number">0</span>
+            <div class="stat-label">GPA</div>
+            <div class="stat-sublabel">University of Arizona</div>
+        </div>
+        
+        <div class="stat-item" data-target="3">
+            <div class="stat-icon">💼</div>
+            <span class="stat-number">0</span>
+            <div class="stat-label">Companies</div>
+            <div class="stat-sublabel">Work Experience</div>
+        </div>
+        
+        <div class="stat-item" data-target="320">
+            <div class="stat-icon">🎯</div>
+            <span class="stat-number">0</span>
+            <div class="stat-label">Inches</div>
+            <div class="stat-sublabel">Catapult Launch</div>
+        </div>
+    </div>
+</div>
     <!-- Project Showcase Image -->
     <div style="margin: 3rem 0; text-align: center;">
         <img src="car.jpg" alt="CAD Project Showcase" style="width: 50%; display: inline-block; box-shadow: 0 8px 30px rgba(0,0,0,0.3);">
@@ -3938,6 +4093,46 @@ console.log('Enhanced chatbot loaded successfully!');
             });
         });
     });
+
+        // Animated Statistics Counter
+function animateCounter(element, target, duration = 2000) {
+    const isDecimal = target % 1 !== 0;
+    const increment = target / (duration / 16);
+    let current = 0;
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            element.textContent = isDecimal ? target.toFixed(1) : Math.ceil(target);
+            clearInterval(timer);
+        } else {
+            element.textContent = isDecimal ? current.toFixed(1) : Math.ceil(current);
+        }
+    }, 16);
+}
+
+// Intersection Observer for scroll animation
+const observerOptions = {
+    threshold: 0.5,
+    rootMargin: '0px'
+};
+
+const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+            entry.target.classList.add('animated');
+            const numberElement = entry.target.querySelector('.stat-number');
+            const target = parseFloat(entry.target.getAttribute('data-target'));
+            animateCounter(numberElement, target);
+        }
+    });
+}, observerOptions);
+
+// Observe all stat items
+document.addEventListener('DOMContentLoaded', () => {
+    const statItems = document.querySAll('.stat-item');
+    statItems.forEach(item => statsObserver.observe(item));
+});
     console.log('All functions loaded successfully!');
 </script>
 
