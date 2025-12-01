@@ -3058,256 +3058,184 @@
     </div>
 
     <script>
-        // Typing effect for hero description
-        const fullText = "Junior at Rochester Institute of Technology with expertise in CAD, FEA, CFD, and prototyping. Experienced in developing scalable engineering solutions across automotive, aerospace, and semiconductor industries. Skilled in SolidWorks, MATLAB, and Python with hands-on experience in design optimization, fluid dynamics analysis, and production-grade system development.";
-        
-        let charIndex = 0;
-        const typingElement = document.querySelector('.typing-text');
-        
-        function typeWriter() {
-            if (charIndex < fullText.length) {
-                typingElement.textContent = fullText.substring(0, charIndex + 1);
-                charIndex++;
-                setTimeout(typeWriter, 30);
-            } else {
-                typingElement.style.borderRight = 'none';
-            }
+    // ===== CHATBOT FUNCTIONS (Load these FIRST) =====
+    function toggleChat() {
+        const container = document.getElementById('chatContainer');
+        if (!container) {
+            alert('Chat container not found!');
+            return;
         }
-        
-        window.addEventListener('load', () => {
-            setTimeout(typeWriter, 500);
-        });
-
-        function openChatFromHero() {
-            const chatContainer = document.getElementById('chatContainer');
-            chatContainer.classList.add('active');
+        container.classList.toggle('active');
+        if (container.classList.contains('active')) {
             document.getElementById('chatInput').focus();
         }
+    }
 
-        // Modal functions
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.add('active');
-            document.body.style.overflow = 'hidden';
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
         }
+    }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
+    function addMessage(content, isUser = false) {
+        const messagesDiv = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+        
+        messageDiv.innerHTML = `
+            <div class="message-avatar">${isUser ? '&#128100;' : '&#129302;'}</div>
+            <div class="message-content">${content}</div>
+        `;
+        
+        messagesDiv.appendChild(messageDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
 
-        function closeModalOnBackdrop(event, modalId) {
-            if (event.target.classList.contains('modal')) {
-                closeModal(modalId);
-            }
-        }
+    function showTypingIndicator() {
+        const messagesDiv = document.getElementById('chatMessages');
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message bot';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = `
+            <div class="message-avatar">&#129302;</div>
+            <div class="message-content typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        `;
+        messagesDiv.appendChild(typingDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
 
-        // Close modal on Escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                const activeModal = document.querySelector('.modal.active');
-                if (activeModal) {
-                    activeModal.classList.remove('active');
-                    document.body.style.overflow = 'auto';
-                }
-            }
-        });
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
+    }
 
-        // Portfolio knowledge base with all resume info
-        const portfolioData = {
-            name: "Dhruv Dilipkumar Prajapati",
-            role: "Mechanical Engineering Junior Student",
-            location: "Rochester, NY",
-            phone: "+1 (520) 390-4462",
-            email: "ddp8909@rit.edu",
-            linkedin: "www.linkedin.com/in/dhruv-prajapati1220",
-            
-            education: [
-                {
-                    degree: "Bachelor of Science in Mechanical Engineering",
-                    school: "Rochester Institute of Technology",
-                    gpa: "3.30",
-                    graduation: "December 2027"
-                },
-                {
-                    degree: "Bachelor of Science in Aerospace Engineering (Transferred)",
-                    school: "University of Arizona",
-                    gpa: "4.00",
-                    period: "Aug 2023 - May 2024"
-                }
-            ],
-            
-            awards: [
-                "RIT Founders International Scholarship (July 2025)",
-                "Academic Year Academic Distinction - U of Arizona (May 2024)",
-                "Dean's List with Distinction - U of Arizona (May 2024)",
-                "Global Wildcat Award - U of Arizona (Aug 2023)"
-            ]
-        };
-
-        function toggleChat() {
-            const container = document.getElementById('chatContainer');
-            container.classList.toggle('active');
-            if (container.classList.contains('active')) {
-                document.getElementById('chatInput').focus();
-            }
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        }
-
-        function addMessage(content, isUser = false) {
-            const messagesDiv = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
-            
-            messageDiv.innerHTML = `
-                <div class="message-avatar">${isUser ? '&#128100;' : '&#129302;'}</div>
-                <div class="message-content">${content}</div>
-            `;
-            
-            messagesDiv.appendChild(messageDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        function showTypingIndicator() {
-            const messagesDiv = document.getElementById('chatMessages');
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message bot';
-            typingDiv.id = 'typingIndicator';
-            typingDiv.innerHTML = `
-                <div class="message-avatar">&#129302;</div>
-                <div class="message-content typing-indicator">
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                </div>
-            `;
-            messagesDiv.appendChild(typingDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            if (indicator) indicator.remove();
-        }
-
-        function getBotResponse(userMessage) {
-            const msg = userMessage.toLowerCase();
-            
-            if (msg.match(/^(hi|hello|hey|greetings)/)) {
-                return "Hello! I'm Dhruv's AI assistant. I can answer questions about his projects, skills, experience, education, and awards. What would you like to know?";
-            }
-            
-            if (msg.includes('gpa') || msg.includes('grades')) {
-                return `Dhruv has an impressive academic record:\n\n• Current GPA at RIT: 3.30\n• Previous GPA at University of Arizona: 4.00 (perfect!)\n\nHe's received multiple academic honors including Dean's List with Distinction.`;
-            }
-            
-            if (msg.includes('award') || msg.includes('achievement') || msg.includes('scholarship')) {
-                return `Dhruv has earned several prestigious awards:\n\n${portfolioData.awards.map(a => `• ${a}`).join('\n')}\n\nHis perfect 4.0 GPA at University of Arizona demonstrates his academic excellence.`;
-            }
-            
-            if (msg.includes('contact') || msg.includes('email') || msg.includes('phone')) {
-                return `You can reach Dhruv at:\n\n&#128231; Email: ${portfolioData.email}\n&#128222; Phone: ${portfolioData.phone}\n&#128188; LinkedIn: ${portfolioData.linkedin}\n&#128205; Location: ${portfolioData.location}`;
-            }
-            
-            if (msg.includes('project')) {
-                return `Dhruv has worked on 11 impressive projects:\n\n• Silver Armored Connector (Reverse Engineering)\n• Pulsed DC Heat Sink (MKS)\n• HVAC Loop Flow Analysis\n• 3D-Printed Catapult (FEA)\n• MATLAB Lunar Lander\n• SolidWorks CAD Portfolio\n• Epitrochoid Analysis\n• Accelerometer & Strain Gauge\n• Thermocouple VI\n• Pressure Sensor VI\n• Mechanical Encoder LED\n\nAsk about any specific project!`;
-            }
-            
-            if (msg.includes('silver') || msg.includes('connector') || msg.includes('reverse')) {
-                return `Silver Armored Connector (April-May 2024):\n\nReverse engineered 7-part assembly with complete CAD modeling, shop drawings, BOM, and FEA analysis. Applied 50 lbs load testing and enhanced original design efficiency by 10% through 3D printing prototype.`;
-            }
-            
-            if (msg.includes('heat') || msg.includes('mks') || msg.includes('semiconductor')) {
-                return `Pulsed DC Heat Sink (Aug-Dec 2025):\n\nPerformed SolidWorks Flow Simulation for MKS Instruments. Validated CFD results through lab testing to support new product development for LAM Research.\n\nNote: Details are confidential due to NDA.`;
-            }
-            
-            if (msg.includes('hvac') || msg.includes('flow')) {
-                return `HVAC Loop Flow Analysis:\n\nDiagnosed insufficient flow rate (196 GPM vs 400 GPM) using Bernoulli's Principle. Implemented portable ultrasonic flow meters, reducing project costs. Identified Pump 7 achieving only 56% capacity.`;
-            }
-            
-            if (msg.includes('catapult') || msg.includes('fea')) {
-                return `3D-Printed Catapult Optimization:\n\nFEA-driven design achieving 320-inch launch distance with strength-to-weight ratio of 626. Iterated through 2 designs with 10-inch improvement and 15% weight increase.`;
-            }
-            
-            if (msg.includes('matlab') || msg.includes('lunar')) {
-                return `MATLAB Lunar Lander (Oct-Dec 2024):\n\nDeveloped physics-based simulation with gravity, thrust, and fuel consumption. Optimized code to achieve landing trajectory within 5% error margin!`;
-            }
-            
-            if (msg.includes('skill') || msg.includes('tool')) {
-                return `Dhruv's technical skills:\n\n• CAD: SolidWorks, CATIA v5, Ansys, ACAD\n• Analysis: FEA, CFD, DOE, RCA\n• Programming: MATLAB, Python, LabVIEW\n• Methodologies: Six Sigma, Lean, 6S\n\nWhat specific area interests you?`;
-            }
-            
-            if (msg.includes('experience') || msg.includes('work') || msg.includes('intern')) {
-                return `Dhruv's professional experience:\n\n1. Mechanical Engineering Intern at MKS Instruments (Aug-Dec 2025)\n2. IT Support Assistant at RIT (Aug 2024-July 2025)\n3. Apple Certified Technician (Aug 2023-May 2024)\n\nAsk about any specific role for details!`;
-            }
-            
-            if (msg.includes('education') || msg.includes('school') || msg.includes('rit')) {
-                return `Dhruv's education:\n\n🎓 ${portfolioData.education[0].degree}\n${portfolioData.education[0].school} | GPA: ${portfolioData.education[0].gpa}\nGraduating: ${portfolioData.education[0].graduation}\n\n🎓 ${portfolioData.education[1].degree}\n${portfolioData.education[1].school} | GPA: ${portfolioData.education[1].gpa}\n\nHe achieved a perfect 4.0 at U of Arizona!`;
-            }
-            
-            if (msg.includes('background') || msg.includes('story') || msg.includes('india')) {
-                return `Dhruv grew up in a farming village in India, where his engineering journey began with taking apart old toys and rebuilding them using motors and scrap materials. That childhood curiosity has evolved into expertise in CAD, FEA, and CFD, now working on cutting-edge semiconductor projects!`;
-            }
-            
-            if (msg.includes('looking for') || msg.includes('seeking') || msg.includes('hire')) {
-                return `Yes! Dhruv is seeking spring/summer 2026 co-op/internship in semiconductors, automotive, or aerospace. He brings expertise in CAD, FEA, CFD, Six Sigma, and hands-on experience from MKS.\n\nContact: ${portfolioData.email}`;
-            }
-            
-            return "I can help you learn about:\n\n• Projects & Experience\n• Skills & Tools\n• Education & Awards\n• Contact Information\n\nTry asking:\n• 'Tell me about his MKS internship'\n• 'What are his awards?'\n• 'What's his GPA?'\n• 'Show me his projects'\n\nWhat interests you?";
-        }
-
-        async function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const sendButton = document.getElementById('sendButton');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            addMessage(message, true);
-            input.value = '';
-            sendButton.disabled = true;
-            
-            showTypingIndicator();
-            await new Promise(resolve => setTimeout(resolve, 800));
-            removeTypingIndicator();
-            
-            const response = getBotResponse(message);
-            addMessage(response, false);
-            
-            sendButton.disabled = false;
-            input.focus();
+    function getBotResponse(userMessage) {
+        const msg = userMessage.toLowerCase();
+        
+        if (msg.match(/^(hi|hello|hey|greetings)/)) {
+            return "Hello! I'm Dhruv's AI assistant. I can answer questions about his projects, skills, experience, education, and awards. What would you like to know?";
         }
         
-        // Mobile Menu Toggle
-        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-        const navLinks = document.querySelectorAll('.nav-menu a');
+        if (msg.includes('project')) {
+            return "Dhruv has worked on 11 impressive projects including:\n\n• Silver Armored Connector (Reverse Engineering)\n• Pulsed DC Heat Sink (MKS)\n• HVAC Loop Flow Analysis\n• 3D-Printed Catapult (FEA)\n• MATLAB Lunar Lander\n\nAsk about any specific project!";
+        }
         
+        if (msg.includes('skill')) {
+            return "Dhruv's technical skills:\n\n• CAD: SolidWorks, CATIA v5, Ansys\n• Analysis: FEA, CFD, DOE, RCA\n• Programming: MATLAB, Python, LabVIEW\n\nWhat specific area interests you?";
+        }
+        
+        return "I can help you learn about:\n\n• Projects & Experience\n• Skills & Tools\n• Education & Awards\n• Contact Information\n\nWhat interests you?";
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const sendButton = document.getElementById('sendButton');
+        const message = input.value.trim();
+        
+        if (!message) return;
+        
+        addMessage(message, true);
+        input.value = '';
+        sendButton.disabled = true;
+        
+        showTypingIndicator();
+        await new Promise(resolve => setTimeout(resolve, 800));
+        removeTypingIndicator();
+        
+        const response = getBotResponse(message);
+        addMessage(response, false);
+        
+        sendButton.disabled = false;
+        input.focus();
+    }
+
+    // ===== OTHER FUNCTIONS =====
+    
+    function openChatFromHero() {
+        const chatContainer = document.getElementById('chatContainer');
+        chatContainer.classList.add('active');
+        document.getElementById('chatInput').focus();
+    }
+
+    function openModal(modalId) {
+        document.getElementById(modalId).classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    function closeModalOnBackdrop(event, modalId) {
+        if (event.target.classList.contains('modal')) {
+            closeModal(modalId);
+        }
+    }
+
+    // ===== PAGE LOAD FUNCTIONS =====
+    
+    // Typing effect
+    const fullText = "Junior at Rochester Institute of Technology with expertise in CAD, FEA, CFD, and prototyping. Experienced in developing scalable engineering solutions across automotive, aerospace, and semiconductor industries.";
+    
+    let charIndex = 0;
+    
+    function typeWriter() {
+        const typingElement = document.querySelector('.typing-text');
+        if (!typingElement) return;
+        
+        if (charIndex < fullText.length) {
+            typingElement.textContent = fullText.substring(0, charIndex + 1);
+            charIndex++;
+            setTimeout(typeWriter, 30);
+        } else {
+            typingElement.style.borderRight = 'none';
+        }
+    }
+    
+    // Mobile menu
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-menu a');
+    
+    if (mobileMenuToggle) {
         mobileMenuToggle.addEventListener('click', () => {
             mobileMenuToggle.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
-        
-        // Close menu when clicking a link
+    }
+    
+    if (navLinks) {
         navLinks.forEach(link => {
             link.addEventListener('click', () => {
-                mobileMenuToggle.classList.remove('active');
-                navMenu.classList.remove('active');
+                if (mobileMenuToggle) mobileMenuToggle.classList.remove('active');
+                if (navMenu) navMenu.classList.remove('active');
             });
         });
-        
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('nav')) {
-                mobileMenuToggle.classList.remove('active');
-                navMenu.classList.remove('active');
+    }
+    
+    // Close modal on Escape
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const activeModal = document.querySelector('.modal.active');
+            if (activeModal) {
+                activeModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
             }
-        });
-    </script>
+        }
+    });
+    
+    // Start typing effect on load
+    window.addEventListener('load', () => {
+        setTimeout(typeWriter, 500);
+    });
+    
+    console.log('All functions loaded successfully!');
+</script>
 
 </body>
 </html>
