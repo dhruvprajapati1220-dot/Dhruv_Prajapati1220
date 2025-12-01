@@ -3114,45 +3114,479 @@
         if (indicator) indicator.remove();
     }
 
-    function getBotResponse(userMessage) {
-        const msg = userMessage.toLowerCase();
-        
-        if (msg.match(/^(hi|hello|hey|greetings)/)) {
-            return "Hello! I'm Dhruv's AI assistant. I can answer questions about his projects, skills, experience, education, and awards. What would you like to know?";
+    const portfolioData = {
+    name: "Dhruv Dilipkumar Prajapati",
+    role: "Mechanical Engineering Junior Student",
+    location: "Rochester, NY",
+    phone: "+1 (520) 390-4462",
+    email: "ddp8909@rit.edu",
+    linkedin: "www.linkedin.com/in/dhruv-prajapati1220",
+    
+    education: {
+        current: {
+            degree: "Bachelor of Science in Mechanical Engineering",
+            school: "Rochester Institute of Technology",
+            gpa: "3.30",
+            graduation: "December 2027"
+        },
+        previous: {
+            degree: "Bachelor of Science in Aerospace Engineering (Transferred)",
+            school: "University of Arizona",
+            gpa: "4.00",
+            period: "Aug 2023 - May 2024"
         }
-        
-        if (msg.includes('project')) {
-            return "Dhruv has worked on 11 impressive projects including:\n\n• Silver Armored Connector (Reverse Engineering)\n• Pulsed DC Heat Sink (MKS)\n• HVAC Loop Flow Analysis\n• 3D-Printed Catapult (FEA)\n• MATLAB Lunar Lander\n\nAsk about any specific project!";
+    },
+    
+    skills: {
+        cad: ["SolidWorks", "CATIA v5", "Ansys", "AutoCAD"],
+        analysis: ["FEA", "CFD", "DOE", "RCA", "Six Sigma"],
+        programming: ["MATLAB", "Python", "LabVIEW", "C++"],
+        methodologies: ["Lean Manufacturing", "6S", "Design for Manufacturing"]
+    },
+    
+    experience: [
+        {
+            title: "Mechanical Engineering Intern",
+            company: "MKS Instruments Inc.",
+            period: "Aug 2025 - Dec 2025",
+            description: "SolidWorks Flow Simulation on pulsed DC heat sink, CFD validation through lab testing"
+        },
+        {
+            title: "IT Support Assistant",
+            company: "Rochester Institute of Technology",
+            period: "Aug 2024 - July 2025"
+        },
+        {
+            title: "Apple Certified Technician",
+            company: "University of Arizona",
+            period: "Aug 2023 - May 2024"
         }
-        
-        if (msg.includes('skill')) {
-            return "Dhruv's technical skills:\n\n• CAD: SolidWorks, CATIA v5, Ansys\n• Analysis: FEA, CFD, DOE, RCA\n• Programming: MATLAB, Python, LabVIEW\n\nWhat specific area interests you?";
+    ],
+    
+    projects: {
+        "silver connector": {
+            name: "Silver Armored Connector",
+            date: "April-May 2024",
+            description: "Reverse engineered 7-part assembly with CAD modeling, shop drawings, BOM, and FEA. Enhanced design efficiency by 10% through 3D printing.",
+            skills: ["Reverse Engineering", "SolidWorks", "FEA", "3D Printing"]
+        },
+        "heat sink": {
+            name: "Pulsed DC Heat Sink Design",
+            date: "Aug-Dec 2025",
+            description: "SolidWorks Flow Simulation for MKS semiconductor fabrication. Validated CFD with lab testing.",
+            skills: ["SolidWorks CFD", "Lab Testing", "Semiconductor"]
+        },
+        "hvac": {
+            name: "HVAC Loop Flow Analysis",
+            description: "Diagnosed 196 GPM vs 400 GPM flow shortfall using Bernoulli's Principle and ultrasonic flow meters.",
+            skills: ["Fluid Mechanics", "Flow Analysis", "Cost Optimization"]
+        },
+        "catapult": {
+            name: "3D-Printed Catapult",
+            description: "FEA-driven design achieving 320-inch launch distance with strength-to-weight ratio of 626.",
+            skills: ["FEA", "3D Printing", "Optimization"]
+        },
+        "matlab": {
+            name: "MATLAB Lunar Lander",
+            date: "Oct-Dec 2024",
+            description: "Physics-based simulation with real-time kinematics, optimized to achieve landing trajectory within 5% error margin.",
+            skills: ["MATLAB", "Physics Simulation", "GUI"]
         }
-        
-        return "I can help you learn about:\n\n• Projects & Experience\n• Skills & Tools\n• Education & Awards\n• Contact Information\n\nWhat interests you?";
-    }
+    },
+    
+    awards: [
+        "RIT Founders International Scholarship (July 2025)",
+        "Academic Year Academic Distinction - U of Arizona (May 2024)",
+        "Dean's List with Distinction - U of Arizona (May 2024)",
+        "Global Wildcat Award - U of Arizona (Aug 2023)"
+    ],
+    
+    story: "Grew up in a farming village in India, where engineering journey began with taking apart old toys and rebuilding them using motors and scrap materials. That childhood curiosity evolved into expertise in CAD, FEA, and CFD."
+};
 
-    async function sendMessage() {
-        const input = document.getElementById('chatInput');
-        const sendButton = document.getElementById('sendButton');
-        const message = input.value.trim();
-        
-        if (!message) return;
-        
-        addMessage(message, true);
-        input.value = '';
-        sendButton.disabled = true;
-        
-        showTypingIndicator();
-        await new Promise(resolve => setTimeout(resolve, 800));
-        removeTypingIndicator();
-        
-        const response = getBotResponse(message);
-        addMessage(response, false);
-        
-        sendButton.disabled = false;
-        input.focus();
+// Smart keyword extraction and matching
+function extractKeywords(message) {
+    const msg = message.toLowerCase();
+    const keywords = {
+        greetings: /\b(hi|hello|hey|greetings|good morning|good afternoon|sup|what's up)\b/,
+        projects: /\b(project|work|portfolio|built|made|created|designed)\b/,
+        skills: /\b(skill|tool|software|know|proficient|expertise|capable)\b/,
+        experience: /\b(experience|work|job|intern|position|role|company)\b/,
+        education: /\b(education|school|university|college|degree|gpa|grade|student|rit|rochester)\b/,
+        contact: /\b(contact|email|phone|reach|call|message|linkedin)\b/,
+        background: /\b(background|story|from|grew up|india|childhood|journey)\b/,
+        awards: /\b(award|achievement|scholarship|honor|recognition|dean)\b/,
+        specific_skill: /\b(solidworks|matlab|python|cad|fea|cfd|ansys|labview)\b/,
+        mks: /\b(mks|semiconductor|internship|heat sink)\b/,
+        specific_project: /\b(silver|connector|catapult|hvac|lunar|lander|epitrochoid)\b/,
+        hiring: /\b(hire|hiring|job|looking for|seeking|available|opportunity|co-op)\b/,
+        coop: /\b(co-op|coop|internship|intern|summer|spring)\b/,
+        why: /\b(why|reason|motivation|inspire)\b/,
+        how: /\b(how|process|method|approach)\b/,
+        what: /\b(what|which|describe|explain)\b/,
+        when: /\b(when|date|time|period|duration)\b/,
+        where: /\b(where|location|place)\b/
+    };
+    
+    const matched = [];
+    for (const [key, pattern] of Object.entries(keywords)) {
+        if (pattern.test(msg)) matched.push(key);
     }
+    return matched;
+}
+
+// Smart response generator
+function getBotResponse(userMessage) {
+    const msg = userMessage.toLowerCase();
+    const keywords = extractKeywords(msg);
+    
+    // Greetings
+    if (keywords.includes('greetings')) {
+        const greetings = [
+            "Hello! 👋 I'm Dhruv's AI assistant. I can tell you about his projects, skills, experience, and background. What would you like to know?",
+            "Hi there! I'm here to help you learn about Dhruv's engineering work. Ask me anything!",
+            "Hey! Great to meet you. I can answer questions about Dhruv's mechanical engineering projects and expertise. What interests you?"
+        ];
+        return greetings[Math.floor(Math.random() * greetings.length)];
+    }
+    
+    // Specific project queries
+    if (msg.includes('silver') || msg.includes('connector')) {
+        return `**${portfolioData.projects["silver connector"].name}** (${portfolioData.projects["silver connector"].date})
+
+${portfolioData.projects["silver connector"].description}
+
+This project demonstrated expertise in: ${portfolioData.projects["silver connector"].skills.join(", ")}
+
+Would you like to know about the FEA analysis or the 3D printing process?`;
+    }
+    
+    if (msg.includes('heat') || msg.includes('mks') || msg.includes('semiconductor')) {
+        return `**${portfolioData.projects["heat sink"].name}** at MKS Instruments
+
+${portfolioData.projects["heat sink"].description}
+
+This was done during Dhruv's internship at MKS from Aug-Dec 2025, supporting new product development for LAM Research.
+
+Note: Detailed results are confidential due to NDA.
+
+Want to know about other projects or his work at MKS?`;
+    }
+    
+    if (msg.includes('hvac') || msg.includes('flow')) {
+        return `**${portfolioData.projects["hvac"].name}**
+
+${portfolioData.projects["hvac"].description}
+
+Key innovation: Used portable ultrasonic flow meters instead of expensive fixed installations, saving significant costs.
+
+Skills applied: ${portfolioData.projects["hvac"].skills.join(", ")}
+
+Interested in the technical details or Bernoulli's Principle application?`;
+    }
+    
+    if (msg.includes('catapult')) {
+        return `**${portfolioData.projects["catapult"].name}**
+
+${portfolioData.projects["catapult"].description}
+
+Impressive results:
+• Launch distance: 320 inches (hit the wall!)
+• Strength/weight ratio: 626
+• 2 design iterations with 10-inch improvement
+
+This project showcased advanced FEA skills and design optimization.
+
+Want to know about the testing process or design methodology?`;
+    }
+    
+    if (msg.includes('matlab') || msg.includes('lunar') || msg.includes('lander')) {
+        return `**${portfolioData.projects["matlab"].name}** (${portfolioData.projects["matlab"].date})
+
+${portfolioData.projects["matlab"].description}
+
+Features:
+• Complete physics simulation (gravity, thrust, fuel consumption)
+• Interactive GUI with real-time controls
+• Achieved 5% error margin in trajectory accuracy
+
+This demonstrates strong programming and physics modeling skills!
+
+Curious about the physics equations or game mechanics?`;
+    }
+    
+    // Skills queries
+    if (keywords.includes('skills') || keywords.includes('specific_skill')) {
+        if (msg.includes('solidworks') || msg.includes('cad')) {
+            return `**CAD & Design Skills:**
+
+Dhruv is highly proficient in:
+• **SolidWorks** (Advanced) - Part modeling, assemblies, drawings, Flow Simulation
+• **CATIA v5** - Surface modeling, aerospace applications
+• **Ansys** - FEA and structural analysis
+• **AutoCAD** - Technical drawings and 2D design
+
+He's used SolidWorks for the Silver Connector reverse engineering, heat sink CFD analysis, and multiple design projects.
+
+Want to see examples of his CAD work?`;
+        }
+        
+        if (msg.includes('programming') || msg.includes('matlab') || msg.includes('python')) {
+            return `**Programming & Analysis Skills:**
+
+• **MATLAB** (Advanced) - Simulations, data analysis, GUI development
+• **Python** - Scripting, automation, data processing
+• **LabVIEW** - Instrumentation and data acquisition
+• **C++** - Basic programming for engineering applications
+
+He built a complete Lunar Lander simulation in MATLAB and uses Python for engineering calculations.
+
+Interested in any specific programming project?`;
+        }
+        
+        return `**Dhruv's Technical Skill Set:**
+
+**CAD & Design:**
+${portfolioData.skills.cad.join(", ")}
+
+**Analysis Tools:**
+${portfolioData.skills.analysis.join(", ")}
+
+**Programming:**
+${portfolioData.skills.programming.join(", ")}
+
+**Methodologies:**
+${portfolioData.skills.methodologies.join(", ")}
+
+Which area would you like to explore in depth?`;
+    }
+    
+    // Projects overview
+    if (keywords.includes('projects')) {
+        return `**Dhruv's Project Portfolio** (11 projects total):
+
+🔧 **Featured Engineering Projects:**
+• Silver Armored Connector (Reverse Engineering + FEA)
+• Pulsed DC Heat Sink (MKS Semiconductor)
+• HVAC Loop Flow Analysis (Bernoulli's Principle)
+• 3D-Printed Catapult (320-inch launch!)
+• MATLAB Lunar Lander Simulation
+
+📐 **CAD & Modeling:**
+• SolidWorks Portfolio (Car, Battery, UGV)
+• Epitrochoid Mathematical Analysis
+
+🔬 **Lab & Instrumentation:**
+• Accelerometer & Strain Gauge
+• Thermocouple VI (LabVIEW)
+• Pressure Sensor VI
+• Mechanical Encoder LED
+
+Which project catches your interest? Just ask about it!`;
+    }
+    
+    // Experience queries
+    if (keywords.includes('experience') || keywords.includes('mks')) {
+        return `**Professional Experience:**
+
+**1. Mechanical Engineering Intern** - MKS Instruments Inc.
+   📅 Aug 2025 - Dec 2025
+   • SolidWorks Flow Simulation for pulsed DC heat sinks
+   • CFD validation through comprehensive lab testing
+   • Pressure drop analysis for semiconductor fab equipment
+   • Supporting LAM Research product development
+
+**2. IT Support Assistant** - RIT
+   📅 Aug 2024 - July 2025
+   • Technical support and troubleshooting
+
+**3. Apple Certified Technician** - University of Arizona
+   📅 Aug 2023 - May 2024
+   • Hardware diagnostics and repair
+
+Want details about any specific role?`;
+    }
+    
+    // Education queries
+    if (keywords.includes('education')) {
+        if (msg.includes('gpa') || msg.includes('grade')) {
+            return `**Academic Performance:**
+
+📚 **Current:** Rochester Institute of Technology
+   GPA: **3.30** | Mechanical Engineering
+   Expected Graduation: December 2027
+
+📚 **Previous:** University of Arizona
+   GPA: **4.00** (Perfect!) | Aerospace Engineering
+   Period: Aug 2023 - May 2024
+
+**Academic Honors:**
+${portfolioData.awards.map(a => `• ${a}`).join('\n')}
+
+That 4.0 GPA at U of Arizona speaks volumes! 🌟`;
+        }
+        
+        return `**Education:**
+
+🎓 **${portfolioData.education.current.degree}**
+   ${portfolioData.education.current.school}
+   GPA: ${portfolioData.education.current.gpa} | Graduating ${portfolioData.education.current.graduation}
+
+🎓 **${portfolioData.education.previous.degree}**
+   ${portfolioData.education.previous.school}
+   GPA: ${portfolioData.education.previous.gpa} (Perfect 4.0!)
+   ${portfolioData.education.previous.period}
+
+Transferred to RIT to pursue Mechanical Engineering with focus on design and analysis.
+
+Want to know about coursework or academic achievements?`;
+    }
+    
+    // Contact information
+    if (keywords.includes('contact')) {
+        return `**Contact Dhruv:**
+
+📧 Email: ${portfolioData.email}
+📱 Phone: ${portfolioData.phone}
+💼 LinkedIn: ${portfolioData.linkedin}
+📍 Location: ${portfolioData.location}
+
+He's actively seeking spring/summer 2026 co-op/internship opportunities in semiconductors, automotive, or aerospace!
+
+Feel free to reach out directly.`;
+    }
+    
+    // Background/story
+    if (keywords.includes('background')) {
+        return `**Dhruv's Journey:**
+
+${portfolioData.story}
+
+From rural India to cutting-edge semiconductor engineering at MKS - his journey shows remarkable growth and passion for mechanical engineering.
+
+**Highlights:**
+• Started with toy motors and scrap materials
+• Achieved 4.0 GPA at University of Arizona
+• Now working on semiconductor fab equipment
+• Expertise in CAD, FEA, CFD across multiple industries
+
+It's an inspiring story of curiosity turning into expertise! 🚀
+
+Want to know more about his work or projects?`;
+    }
+    
+    // Awards and achievements
+    if (keywords.includes('awards')) {
+        return `**Awards & Recognition:**
+
+${portfolioData.awards.map((a, i) => `${i + 1}. ${a}`).join('\n')}
+
+**Academic Excellence:**
+• Perfect 4.0 GPA at University of Arizona
+• Dean's List with Distinction
+• International scholarship recipient
+
+These achievements demonstrate consistent academic excellence and strong work ethic!
+
+Curious about his education or projects?`;
+    }
+    
+    // Job seeking / hiring
+    if (keywords.includes('hiring') || keywords.includes('coop')) {
+        return `**Yes! Dhruv is seeking opportunities:**
+
+🎯 **Looking for:** Spring/Summer 2026 Co-op/Internship
+🏭 **Industries:** Semiconductors, Automotive, Aerospace
+🛠️ **Expertise:** CAD, FEA, CFD, Six Sigma, Design Optimization
+
+**What he brings:**
+• Real semiconductor industry experience (MKS Instruments)
+• Strong CAD and simulation skills (SolidWorks, FEA, CFD)
+• Proven track record of design optimization
+• Perfect 4.0 GPA achievement
+• Hands-on lab testing and validation experience
+
+📧 Contact: ${portfolioData.email}
+📱 Phone: ${portfolioData.phone}
+
+Ready to contribute to your engineering team!`;
+    }
+    
+    // Question words - provide helpful guidance
+    if (keywords.includes('how')) {
+        return `Great question! I can tell you **HOW** Dhruv:
+
+• Approaches engineering problems (methodology)
+• Uses FEA and CFD for design validation
+• Optimized the catapult design (achieved 320-inch launch)
+• Validated CFD simulations through lab testing
+• Applied Bernoulli's Principle to solve HVAC issues
+
+What specific process interests you?`;
+    }
+    
+    if (keywords.includes('why')) {
+        return `Asking **WHY** is great! I can explain:
+
+• Why Dhruv chose mechanical engineering (childhood curiosity with toys)
+• Why he transferred from Aerospace to Mechanical Engineering
+• Why he's passionate about CAD and simulation
+• Why his projects focus on optimization and testing
+
+What would you like to understand better?`;
+    }
+    
+    if (keywords.includes('what')) {
+        return `I can tell you **WHAT:**
+
+• Projects Dhruv has worked on (11 total!)
+• Skills and tools he's mastered
+• Companies he's worked for (MKS, RIT, U of Arizona)
+• Achievements and awards he's earned
+• Industries he's interested in
+
+What specific topic interests you?`;
+    }
+    
+    // Thank you
+    if (msg.match(/\b(thank|thanks|appreciate)\b/)) {
+        return `You're very welcome! 😊 
+
+Is there anything else you'd like to know about Dhruv's work, projects, or experience? I'm here to help!`;
+    }
+    
+    // Fallback - intelligent suggestion based on message length and context
+    if (userMessage.length < 15) {
+        return `I'd love to help! Could you ask a more specific question? For example:
+
+• "Tell me about the catapult project"
+• "What CAD software does Dhruv know?"
+• "What's his GPA?"
+• "Is he looking for internships?"
+• "Describe his MKS experience"
+
+What would you like to know?`;
+    }
+    
+    // Default intelligent response
+    return `That's an interesting question! While I don't have specific information about "${userMessage}", I can help you learn about:
+
+📊 **Projects:** Silver Connector, Heat Sink, HVAC Analysis, Catapult, MATLAB Lunar Lander
+🛠️ **Skills:** SolidWorks, FEA, CFD, MATLAB, Python
+💼 **Experience:** MKS Instruments (Semiconductor), RIT, University of Arizona
+🎓 **Education:** 3.30 GPA at RIT, 4.00 GPA at U of Arizona
+🏆 **Awards:** RIT Scholarship, Dean's List, Academic Distinction
+📧 **Contact:** ${portfolioData.email}
+
+Try asking about any of these topics! For example:
+• "What did Dhruv do at MKS?"
+• "Tell me about his best project"
+• "What are his technical skills?"`;
+}
+
+// Export the function for use in your website
+// Replace your existing getBotResponse function with this enhanced version
+console.log('Enhanced chatbot loaded successfully!');
 
     // ===== OTHER FUNCTIONS =====
     
