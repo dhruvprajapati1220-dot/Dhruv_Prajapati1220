@@ -4095,44 +4095,44 @@ console.log('Enhanced chatbot loaded successfully!');
     });
 
         // Animated Statistics Counter
-function animateCounter(element, target, duration = 2000) {
-    const isDecimal = target % 1 !== 0;
-    const increment = target / (duration / 16);
-    let current = 0;
+    function animateCounter(element, target, duration = 2000) {
+        const isDecimal = target % 1 !== 0;
+        const increment = target / (duration / 16);
+        let current = 0;
     
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = isDecimal ? target.toFixed(1) : Math.ceil(target);
-            clearInterval(timer);
-        } else {
-            element.textContent = isDecimal ? current.toFixed(1) : Math.ceil(current);
-        }
-    }, 16);
-}
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                element.textContent = isDecimal ? target.toFixed(1) : Math.ceil(target);
+                clearInterval(timer);
+            } else {
+                element.textContent = isDecimal ? current.toFixed(1) : Math.ceil(current);
+            }
+        }, 16);
+    }
 
 // Intersection Observer for scroll animation
-const observerOptions = {
-    threshold: 0.5,
-    rootMargin: '0px'
-};
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px'
+    };
 
-const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-            entry.target.classList.add('animated');
-            const numberElement = entry.target.querySelector('.stat-number');
-            const target = parseFloat(entry.target.getAttribute('data-target'));
-            animateCounter(numberElement, target);
-        }
-    });
-}, observerOptions);
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+                entry.target.classList.add('animated');
+                const numberElement = entry.target.querySelector('.stat-number');
+                const target = parseFloat(entry.target.getAttribute('data-target'));
+                animateCounter(numberElement, target);
+            }
+        });
+    }, observerOptions);
 
 // Observe all stat items
-document.addEventListener('DOMContentLoaded', () => {
-    const statItems = document.querySAll('.stat-item');
-    statItems.forEach(item => statsObserver.observe(item));
-});
+    document.addEventListener('DOMContentLoaded', () => {
+        const statItems = document.querySAll('.stat-item');
+        statItems.forEach(item => statsObserver.observe(item));
+    });
     console.log('All functions loaded successfully!');
 </script>
 
