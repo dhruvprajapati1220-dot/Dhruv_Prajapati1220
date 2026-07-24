@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhruv Prajapati — Mechanical Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0b0d;
+    --panel: #131518;
+    --panel-2: #17191d;
+    --hairline: #24272b;
+    --text: #f2f3f4;
+    --text-dim: #8a9098;
+    --text-faint: #52585f;
+    --accent: #4fd1ff;
+    --accent-dim: rgba(79, 209, 255, 0.12);
+    --ok: #4ade80;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+  .display { font-family: 'Space Grotesk', sans-serif; }
+
+  .bg-grid {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none; z-index: 0;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 48px;
+    backdrop-filter: blur(12px);
+    background: rgba(10,11,13,0.75);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .logo { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a {
+    color: var(--text-dim); text-decoration: none; font-size: 13px;
+    font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.02em;
+    transition: color 0.2s; position: relative; padding-bottom: 3px;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 1px;
+    background: var(--accent); transition: right 0.25s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover::after { right: 0; }
+  .nav-cta {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink);
+    background: var(--accent); padding: 8px 16px; border-radius: 6px;
+    text-decoration: none; font-weight: 500;
+  }
+
+  main { position: relative; z-index: 1; }
+
+  .hero {
+    min-height: 86vh; display: flex; align-items: center;
+    padding: 120px 48px 40px; max-width: 1200px; margin: 0 auto; gap: 60px;
+  }
+  .hero-left { flex: 1.1; }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--accent);
+    letter-spacing: 0.12em; display: flex; align-items: center; gap: 8px; margin-bottom: 22px;
+  }
+  .eyebrow::before {
+    content: ''; width: 6px; height: 6px; background: var(--accent);
+    border-radius: 50%; box-shadow: 0 0 8px var(--accent);
+  }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif; font-size: clamp(38px, 5vw, 62px);
+    font-weight: 600; line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 22px;
+  }
+  .hero h1 .fade { color: var(--text-dim); }
+  .hero p {
+    font-size: 16px; color: var(--text-dim); max-width: 480px; line-height: 1.6; margin-bottom: 32px;
+  }
+  .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: var(--text);
+    color: var(--ink); padding: 12px 22px; border-radius: 6px; text-decoration: none;
+    font-weight: 500; transition: transform 0.15s, opacity 0.15s;
+  }
+  .btn-primary:hover { transform: translateY(-1px); opacity: 0.9; }
+  .btn-secondary {
+    font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--text-dim);
+    border: 1px solid var(--hairline); padding: 12px 22px; border-radius: 6px;
+    text-decoration: none; transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--text-dim); color: var(--text); }
+
+  .stats-row { display: flex; gap: 32px; margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--hairline); flex-wrap: wrap; }
+  .stat .num { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; }
+  .stat .label { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--text-faint); letter-spacing: 0.04em; margin-top: 2px; }
+
+  .hero-right { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .rig-frame {
+    width: 100%; max-width: 440px; aspect-ratio: 1;
+    border: 1px solid var(--hairline); border-radius: 12px; background: var(--panel);
+    position: relative; overflow: hidden;
+  }
+  .rig-frame::before {
+    content: 'FIG. 01 — VORTEX RING PAIR, CONFINED FLOW';
+    position: absolute; top: 14px; left: 16px; z-index: 2;
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--text-faint); letter-spacing: 0.04em;
+  }
+  .rig-svg { width: 100%; height: 100%; }
+  .vortex-instance {
+    transform-box: fill-box; transform-origin: 50% 0%;
+    animation: vortexPropagate 4.4s cubic-bezier(0.3,0.55,0.35,1) infinite;
+  }
+  .vortex-instance.v1 { animation-delay: 0s; }
+  .vortex-instance.v2 { animation-delay: 2.2s; }
+  @keyframes vortexPropagate {
+    0%   { transform: translateY(0) scale(0.35); opacity: 0; }
+    8%   { opacity: 0.95; }
+    75%  { opacity: 0.55; }
+    100% { transform: translateY(230px) scale(1.15); opacity: 0; }
+  }
+  .rig-caption {
+    position: absolute; bottom: 14px; left: 16px; right: 16px; z-index: 2;
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--text-faint);
+    display: flex; justify-content: space-between;
+  }
+
+  .logo-strip {
+    max-width: 1200px; margin: 0 auto; padding: 22px 48px;
+    border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline);
+    display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
+  }
+  .logo-strip-label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-faint);
+    letter-spacing: 0.08em; white-space: nowrap;
+  }
+  .logo-strip-items { display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+  .logo-strip-items span {
+    font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.04em; color: var(--text-faint); transition: color 0.2s;
+  }
+  .logo-strip-items span:hover { color: var(--text-dim); }
+
+  section { padding: 40px 48px; max-width: 1200px; margin: 0 auto; border-top: 1px solid var(--hairline); }
+  section:first-of-type { border-top: none; }
+  .section-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 26px; }
+  .section-tag { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text-faint); letter-spacing: 0.1em; }
+  .section-head h2 { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  .section-line { flex: 1; height: 1px; background: var(--hairline); }
+
+  .project-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--hairline); border: 1px solid var(--hairline);
+    border-radius: 12px; overflow: hidden;
+  }
+  .project-card {
+    background: var(--panel); padding: 26px; position: relative; text-decoration: none;
+    color: inherit; display: block; cursor: pointer; z-index: 1;
+    transition: background 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .project-card:hover {
+    background: var(--panel-2); transform: translateY(-3px);
+    box-shadow: 0 12px 24px -12px rgba(79, 209, 255, 0.25);
+    z-index: 2;
+  }
+  .project-card::after {
+    content: '↗'; position: absolute; top: 22px; right: 22px;
+    font-size: 14px; color: var(--text-faint); opacity: 0; transition: opacity .2s, transform .2s, color .2s;
+  }
+  .project-card:hover::after { opacity: 1; transform: translate(2px,-2px); color: var(--accent); }
+  .project-card .tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--accent);
+    letter-spacing: 0.06em; margin-bottom: 12px; display: block;
+  }
+  .project-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+  .project-card p { font-size: 12.5px; color: var(--text-dim); line-height: 1.5; }
+
+  .exp-list { display: flex; flex-direction: column; gap: 14px; }
+  .exp-row-full {
+    border: 1px solid var(--hairline); border-radius: 10px; background: var(--panel);
+    padding: 22px 24px;
+  }
+  .exp-row-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
+  }
+  .exp-row-right { display: flex; align-items: center; gap: 10px; }
+  .exp-date { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--text-faint); white-space: nowrap; }
+  .exp-role { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; }
+  .exp-company { color: var(--text-dim); font-size: 13px; margin-top: 3px; }
+  .exp-badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--accent);
+    border: 1px solid var(--accent); padding: 4px 10px; border-radius: 20px; letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .exp-bullets { padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
+  .exp-bullets li { font-size: 13.5px; color: var(--text-dim); line-height: 1.55; }
+
+  .edu-card {
+    border: 1px solid var(--hairline); border-radius: 10px; background: var(--panel);
+    padding: 26px; display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .edu-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+  .edu-tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+
+  .resume-card {
+    border: 1px solid var(--hairline); border-radius: 10px; background: var(--panel);
+    padding: 26px; display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 20px;
+  }
+  .resume-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); border-radius: 12px; overflow: hidden; }
+  .skill-cat { background: var(--panel); padding: 22px; }
+  .skill-cat h4 { font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: var(--accent); margin-bottom: 10px; letter-spacing: 0.01em; }
+  .skill-cat p { font-size: 12.5px; color: var(--text-dim); line-height: 1.6; }
+
+  .contact-box {
+    border: 1px solid var(--hairline); border-radius: 16px; background: var(--panel);
+    padding: 60px 48px; text-align: center;
+  }
+  .contact-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 600; margin-bottom: 14px; letter-spacing: -0.01em; }
+  .contact-box p { color: var(--text-dim); margin-bottom: 28px; font-size: 14.5px; }
+
+  footer {
+    padding: 30px 48px; border-top: 1px solid var(--hairline);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-faint);
+  }
+
+  @media (max-width: 900px) {
+    .hero { flex-direction: column; padding-top: 140px; }
+    .nav-links { display: none; }
+    .project-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .edu-card { flex-direction: column; }
+    .edu-right { align-items: flex-start; text-align: left; }
+    .edu-tags { justify-content: flex-start; }
+  }
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    .project-card, .nav-links a::after, .btn-primary, .btn-secondary { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+
+<nav>
+  <div class="logo">DHRUV<span>.</span>PRAJAPATI</div>
+  <div class="nav-links">
+    <a href="projects.html">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#resume">Resume</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="resume.pdf" target="_blank" class="nav-cta">Resume ↓</a>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="hero-left">
+      <div class="eyebrow">INCOMING BATTERY CELL ENGINEER INTERN · TESLA · FALL 2026</div>
+      <h1>Mechanical engineer,<br><span class="fade">thinking in tolerances</span><br>and thermal loads.</h1>
+      <p>4th-year mechanical engineering student at RIT, experienced in hardware validation, thermal systems, and failure analysis across energy, manufacturing, and battery technologies.</p>
+      <div class="hero-actions">
+        <a href="#work" class="btn-primary">View projects →</a>
+        <a href="mailto:ddp8909@rit.edu" class="btn-secondary">Email me</a>
+      </div>
+      <div class="stats-row">
+        <div class="stat"><div class="num">3.50</div><div class="label">GPA · DEAN'S LIST '26</div></div>
+        <div class="stat"><div class="num">11</div><div class="label">PROJECTS SHIPPED</div></div>
+        <div class="stat"><div class="num">4</div><div class="label">INDUSTRY / RESEARCH ROLES</div></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="rig-frame">
+        <svg class="rig-svg" viewBox="0 0 440 440" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <g id="vortexShape">
+              <path d="M135,0 C65,10 20,70 30,110 C40,150 105,170 150,170 C195,170 260,150 270,110 C280,70 235,10 165,0" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+              <path d="M90.0,105.0 L90.6,105.1 L91.1,105.5 L91.4,106.0 L91.6,106.7 L91.6,107.5 L91.2,108.3 L90.7,109.0 L89.8,109.7 L88.8,110.1 L87.5,110.3 L86.2,110.1 L84.8,109.7 L83.5,108.8 L82.3,107.6 L81.3,106.1 L80.7,104.3 L80.5,102.3 L80.7,100.2 L81.4,98.0 L82.6,96.0 L84.2,94.2 L86.3,92.7 L88.8,91.6 L91.6,91.1 L94.5,91.1 L97.5,91.8 L100.3,93.1 L103.0,95.1 L105.2,97.6 L106.9,100.6 L108.1,104.1 L108.4,107.8 L108.1,111.6 L106.9,115.4 L104.9,119.0 L102.1,122.1 L98.7,124.7 L94.7,126.7 L90.3,127.7 L85.6,127.9 L80.9,127.1 L76.4,125.3 L72.2,122.6 L68.5,119.0 L65.6,114.7 L63.6,109.7 L62.6,104.3 L62.7,98.7 L64.0,93.2 L66.4,87.9" fill="none" stroke="var(--text-dim)" stroke-width="1.1"/>
+              <path d="M210.0,105.0 L210.6,104.9 L211.1,104.5 L211.4,104.0 L211.6,103.3 L211.6,102.5 L211.2,101.7 L210.7,101.0 L209.8,100.3 L208.8,99.9 L207.5,99.7 L206.2,99.9 L204.8,100.3 L203.5,101.2 L202.3,102.4 L201.3,103.9 L200.7,105.7 L200.5,107.7 L200.7,109.8 L201.4,112.0 L202.6,114.0 L204.2,115.8 L206.3,117.3 L208.8,118.4 L211.6,118.9 L214.5,118.9 L217.5,118.2 L220.3,116.9 L223.0,114.9 L225.2,112.4 L226.9,109.4 L228.1,105.9 L228.4,102.2 L228.1,98.4 L226.9,94.6 L224.9,91.0 L222.1,87.9 L218.7,85.3 L214.7,83.3 L210.3,82.3 L205.6,82.1 L200.9,82.9 L196.4,84.7 L192.2,87.4 L188.5,91.0 L185.6,95.3 L183.6,100.3 L182.6,105.7 L182.7,111.3 L184.0,116.8 L186.4,122.1" fill="none" stroke="var(--text-dim)" stroke-width="1.1"/>
+            </g>
+          </defs>
+
+          <line x1="220" y1="0" x2="220" y2="440" stroke="var(--hairline)" stroke-width="1" stroke-dasharray="2 6"/>
+          <rect x="207" y="18" width="26" height="70" fill="none" stroke="var(--text-dim)" stroke-width="1.5"/>
+          <g stroke="var(--accent)" stroke-width="1.5" fill="none" opacity="0.85">
+            <path d="M212,94 L212,106 M209,102 L212,108 L215,102"/>
+            <path d="M220,94 L220,110 M217,104 L220,112 L223,104"/>
+            <path d="M228,94 L228,106 M225,102 L228,108 L231,102"/>
+          </g>
+
+          <use href="#vortexShape" x="70" y="100" class="vortex-instance v1"/>
+          <use href="#vortexShape" x="70" y="100" class="vortex-instance v2"/>
+
+          <g stroke="var(--text-faint)" stroke-width="1.2" fill="none">
+            <path d="M220,395 L220,420 M215,414 L220,422 L225,414"/>
+          </g>
+        </svg>
+        <div class="rig-caption">
+          <span>RE ≈ 2,400</span>
+          <span>FAST LAB · RIT</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="logo-strip reveal">
+    <span class="logo-strip-label">Worked with</span>
+    <div class="logo-strip-items">
+      <span>TESLA</span>
+      <span>PG&amp;E</span>
+      <span>MKS INSTRUMENTS</span>
+      <span>RIT · FAST LAB</span>
+    </div>
+  </div>
+
+  <section id="work" class="reveal">
+    <div class="section-head">
+      <span class="section-tag">01</span>
+      <h2>Projects</h2>
+      <div class="section-line"></div>
+    </div>
+    <a href="projects.html" class="btn-primary" style="display:inline-block;">View all projects →</a>
+  </section>
+
+  <section id="experience" class="reveal">
+    <div class="section-head">
+      <span class="section-tag">02</span>
+      <h2>Experience</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="exp-list">
+      <div class="exp-row-full">
+        <div class="exp-row-head">
+          <div>
+            <div class="exp-role">Battery Cell Engineer Intern</div>
+            <div class="exp-company">Tesla · Austin, TX</div>
+          </div>
+          <div class="exp-row-right">
+            <span class="exp-badge">INCOMING</span>
+            <span class="exp-date mono">Aug – Dec 2026</span>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Incoming intern working with 4680 tabless cell mechanical, manufacturing, and process development teams to support development at all stages.</li>
+        </ul>
+      </div>
+
+      <div class="exp-row-full">
+        <div class="exp-row-head">
+          <div>
+            <div class="exp-role">Failure Analysis Engineer Intern</div>
+            <div class="exp-company">Pacific Gas &amp; Electric Company (PG&E) — ATS · San Ramon, CA</div>
+          </div>
+          <div class="exp-row-right">
+            <span class="exp-date mono">Jun – Aug 2026</span>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Developed coupled CFD (transient), electromagnetic, and structural simulations in ANSYS to evaluate 4 operational loading conditions and identify critical stress concentrations in substation post-insulator assemblies.</li>
+          <li>Supported validation of 80" tall L-type 230kV Lapp porcelain insulators through mechanical testing, data analysis, and technical reporting for engineering assessment.</li>
+          <li>Conducted microscopy investigations on 5+ failed utility assets — switches, conductors, post insulators — to identify fracture mechanisms and support root-cause analysis.</li>
+          <li>Developed a transient MATLAB evaporation model to predict residual moisture removal across a 14.7–1 psia pressure range, with sensitivity studies on temperature and humidity after hydrostatic pipeline testing.</li>
+        </ul>
+      </div>
+
+      <div class="exp-row-full">
+        <div class="exp-row-head">
+          <div>
+            <div class="exp-role">Mechanical Test Engineer Intern</div>
+            <div class="exp-company">MKS Instruments · Rochester, NY</div>
+          </div>
+          <div class="exp-row-right">
+            <span class="exp-date mono">Aug – Dec 2025</span>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Designed and executed experimental characterization of a liquid-cooled microchannel heat sink for a 5kW pulsed-DC generator (RPG-50), evaluating pressure-drop and flow-rate tradeoffs.</li>
+          <li>Validated results using CFD simulation and first-principles analysis, contributing to a 25% improvement in system efficiency.</li>
+          <li>Supported instrumentation and validation across multiple reliability test environments — HVAC controls, liquid-nitrogen systems, and ALT/HASS/ESS chambers — for hardware qualification.</li>
+        </ul>
+      </div>
+
+      <div class="exp-row-full">
+        <div class="exp-row-head">
+          <div>
+            <div class="exp-role">Mechanical Engineer Researcher</div>
+            <div class="exp-company">Fluids Acoustics Structures Laboratory (FAST Lab) · Rochester, NY</div>
+          </div>
+          <div class="exp-row-right">
+            <span class="exp-date mono">Feb – May 2026</span>
+          </div>
+        </div>
+        <ul class="exp-bullets">
+          <li>Designed and built an experimental vortex-ring test platform integrating a linear actuator, Arduino-based control system, and Pololu motor controller to investigate confined-flow fluid dynamics.</li>
+          <li>Conducted Particle Image Velocimetry (PIV) experiments to quantify vortex-induced flow structures and impingement heat-transfer behavior in confined geometries.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="education" class="reveal">
+    <div class="section-head">
+      <span class="section-tag">03</span>
+      <h2>Education</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-left">
+        <div class="exp-role">Bachelor of Science in Mechanical Engineering</div>
+        <div class="exp-company">Rochester Institute of Technology · Rochester, NY</div>
+      </div>
+      <div class="edu-right">
+        <span class="exp-date mono">Aug 2023 – Dec 2027</span>
+        <div class="edu-tags">
+          <span class="exp-badge" style="border-color:var(--ok); color:var(--ok);">Senior Year</span>
+          <span class="exp-badge">Dean's List 2026</span>
+          <span class="exp-badge">GPA 3.50</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="resume" class="reveal">
+    <div class="section-head">
+      <span class="section-tag">04</span>
+      <h2>Resume</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="resume-card">
+      <div class="exp-role">Dhruv Prajapati — Résumé</div>
+      <div class="resume-actions">
+        <a href="resume.pdf" target="_blank" class="btn-primary">Download PDF ↓</a>
+        <a href="resume.pdf" target="_blank" class="btn-secondary">View in new tab</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="reveal">
+    <div class="section-head">
+      <span class="section-tag">05</span>
+      <h2>Technical toolkit</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-cat">
+        <h4>Thermal & Fluid</h4>
+        <p>Heat transfer, fluid mechanics, CFD — SolidWorks Flow Simulation, ANSYS Fluent</p>
+      </div>
+      <div class="skill-cat">
+        <h4>CAD & Analysis</h4>
+        <p>SolidWorks, ANSYS Mechanical & Fluent, CATIA V5</p>
+      </div>
+      <div class="skill-cat">
+        <h4>Programming</h4>
+        <p>Python, MATLAB, Simulink, LabVIEW, Arduino</p>
+      </div>
+      <div class="skill-cat">
+        <h4>Hardware & Test</h4>
+        <p>SEM, oscilloscopes, waveform generators, PIV, Instron</p>
+      </div>
+      <div class="skill-cat">
+        <h4>Manufacturing</h4>
+        <p>CNC milling, lathe, GD&T, 3D printing, surface metrology</p>
+      </div>
+      <div class="skill-cat">
+        <h4>Sectors</h4>
+        <p>Energy, semiconductor, automotive/EV, battery manufacturing</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="reveal">
+    <div class="contact-box">
+      <h2>Let's build something that works.</h2>
+      <p>Rochester, NY · Open to Summer 2027 thermal / mechanical internships.</p>
+      <div class="hero-actions" style="justify-content:center;">
+        <a href="mailto:ddp8909@rit.edu" class="btn-primary">Email me →</a>
+        <a href="https://linkedin.com/in/dhruv-prajapati1220" target="_blank" class="btn-secondary">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>© 2026 DHRUV PRAJAPATI</span>
+  <span>+1 (520) 390-4462 · ROCHESTER, NY</span>
+</footer>
+
+<script>
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var revealEls = document.querySelectorAll('.reveal');
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function(el) { observer.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('is-visible'); });
+  }
+</script>
+</body>
+</html>

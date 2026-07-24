@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhruv Prajapati — Mechanical Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a0b0d;
+    --panel: #131518;
+    --panel-2: #17191d;
+    --hairline: #24272b;
+    --text: #f2f3f4;
+    --text-dim: #8a9098;
+    --text-faint: #52585f;
+    --accent: #4fd1ff;
+    --accent-dim: rgba(79, 209, 255, 0.12);
+    --ok: #4ade80;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--ink);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+  .display { font-family: 'Space Grotesk', sans-serif; }
+
+  .bg-grid {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 64px 64px;
+    pointer-events: none; z-index: 0;
+  }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 48px;
+    backdrop-filter: blur(12px);
+    background: rgba(10,11,13,0.75);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .logo { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a {
+    color: var(--text-dim); text-decoration: none; font-size: 13px;
+    font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.02em;
+    transition: color 0.2s; position: relative; padding-bottom: 3px;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 1px;
+    background: var(--accent); transition: right 0.25s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover::after { right: 0; }
+  .nav-cta {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink);
+    background: var(--accent); padding: 8px 16px; border-radius: 6px;
+    text-decoration: none; font-weight: 500;
+  }
+
+  main { position: relative; z-index: 1; }
+
+  .hero {
+    min-height: 92vh; display: flex; align-items: center;
+    padding: 130px 48px 60px; max-width: 1200px; margin: 0 auto; gap: 60px;
+  }
+  .hero-left { flex: 1.1; }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--accent);
+    letter-spacing: 0.12em; display: flex; align-items: center; gap: 8px; margin-bottom: 22px;
+  }
+  .eyebrow::before {
+    content: ''; width: 6px; height: 6px; background: var(--accent);
+    border-radius: 50%; box-shadow: 0 0 8px var(--accent);
+  }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif; font-size: clamp(38px, 5vw, 62px);
+    font-weight: 600; line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 22px;
+  }
+  .hero h1 .fade { color: var(--text-dim); }
+  .hero p {
+    font-size: 16px; color: var(--text-dim); max-width: 480px; line-height: 1.6; margin-bottom: 32px;
+  }
+  .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    font-family: 'IBM Plex Mono', monospace; font-size: 13px; background: var(--text);
+    color: var(--ink); padding: 12px 22px; border-radius: 6px; text-decoration: none;
+    font-weight: 500; transition: transform 0.15s, opacity 0.15s;
+  }
+  .btn-primary:hover { transform: translateY(-1px); opacity: 0.9; }
+  .btn-secondary {
+    font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--text-dim);
+    border: 1px solid var(--hairline); padding: 12px 22px; border-radius: 6px;
+    text-decoration: none; transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-secondary:hover { border-color: var(--text-dim); color: var(--text); }
+
+  .stats-row { display: flex; gap: 32px; margin-top: 48px; padding-top: 26px; border-top: 1px solid var(--hairline); flex-wrap: wrap; }
+  .stat .num { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; }
+  .stat .label { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--text-faint); letter-spacing: 0.04em; margin-top: 2px; }
+
+  .hero-right { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .rig-frame {
+    width: 100%; max-width: 440px; aspect-ratio: 1;
+    border: 1px solid var(--hairline); border-radius: 12px; background: var(--panel);
+    position: relative; overflow: hidden;
+  }
+  .rig-frame::before {
+    content: 'FIG. 01 — VORTEX RING RIG, FAST LAB';
+    position: absolute; top: 14px; left: 16px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--text-faint); letter-spacing: 0.04em;
+  }
+  .ring {
+    position: absolute; top: 50%; left: 50%;
+    border: 1.5px solid var(--accent); border-radius: 50%; opacity: 0;
+    transform: translate(-50%, -50%);
+    animation: ringPulse 4s cubic-bezier(0.2,0.6,0.3,1) infinite;
+  }
+  .ring:nth-child(1) { animation-delay: 0s; }
+  .ring:nth-child(2) { animation-delay: 1.3s; }
+  .ring:nth-child(3) { animation-delay: 2.6s; }
+  @keyframes ringPulse {
+    0% { opacity: 0; width: 40px; height: 14px; }
+    15% { opacity: 0.9; }
+    100% { opacity: 0; width: 320px; height: 120px; }
+  }
+  .rig-nozzle {
+    position: absolute; left: 50%; top: 50%; width: 26px; height: 26px;
+    transform: translate(-50%, -50%); border: 1.5px solid var(--text-dim); border-radius: 3px;
+  }
+  .rig-axis {
+    position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
+    background: repeating-linear-gradient(to bottom, var(--hairline) 0 4px, transparent 4px 8px);
+  }
+  .rig-caption {
+    position: absolute; bottom: 14px; left: 16px; right: 16px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--text-faint);
+    display: flex; justify-content: space-between;
+  }
+
+  section { padding: 40px 48px; max-width: 1200px; margin: 0 auto; border-top: 1px solid var(--hairline); }
+  section:first-of-type { border-top: none; }
+  .section-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 26px; }
+  .section-tag { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--text-faint); letter-spacing: 0.1em; }
+  .section-head h2 { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 600; letter-spacing: -0.01em; }
+  .section-line { flex: 1; height: 1px; background: var(--hairline); }
+
+  .project-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--hairline); border: 1px solid var(--hairline);
+    border-radius: 12px; overflow: hidden;
+  }
+  .project-card {
+    background: var(--panel); padding: 26px; position: relative; text-decoration: none;
+    color: inherit; display: block; cursor: pointer; z-index: 1;
+    transition: background 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .project-card:hover {
+    background: var(--panel-2); transform: translateY(-3px);
+    box-shadow: 0 12px 24px -12px rgba(79, 209, 255, 0.25);
+    z-index: 2;
+  }
+  .project-card::after {
+    content: '↗'; position: absolute; top: 22px; right: 22px;
+    font-size: 14px; color: var(--text-faint); opacity: 0; transition: opacity .2s, transform .2s, color .2s;
+  }
+  .project-card:hover::after { opacity: 1; transform: translate(2px,-2px); color: var(--accent); }
+  .project-card .tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--accent);
+    letter-spacing: 0.06em; margin-bottom: 12px; display: block;
+  }
+  .project-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+  .project-card p { font-size: 12.5px; color: var(--text-dim); line-height: 1.5; }
+
+  .exp-list { display: flex; flex-direction: column; gap: 14px; }
+  .exp-row-full {
+    border: 1px solid var(--hairline); border-radius: 10px; background: var(--panel);
+    padding: 22px 24px;
+  }
+  .exp-row-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 10px; margin-bottom: 14px;
+  }
+  .exp-row-right { display: flex; align-items: center; gap: 10px; }
+  .exp-date { font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; color: var(--text-faint); white-space: nowrap; }
+  .exp-role { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600; }
+  .exp-company { color: var(--text-dim); font-size: 13px; margin-top: 3px; }
+  .exp-badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--accent);
+    border: 1px solid var(--accent); padding: 4px 10px; border-radius: 20px; letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .exp-bullets { padding-left: 18px; display: flex; flex-direction: column; gap: 8px; }
+  .exp-bullets li { font-size: 13.5px; color: var(--text-dim); line-height: 1.55; }
+
+  .edu-card {
+    border: 1px solid var(--hairline); border-radius: 10px; background: var(--panel);
+    padding: 26px; display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .edu-right { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+  .edu-tags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--hairline); border: 1px solid var(--hairline); border-radius: 12px; overflow: hidden; }
+  .skill-cat { background: var(--panel); padding: 22px; }
+  .skill-cat h4 { font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: var(--accent); margin-bottom: 10px; letter-spacing: 0.01em; }
+  .skill-cat p { font-size: 12.5px; color: var(--text-dim); line-height: 1.6; }
+
+  .contact-box {
+    border: 1px solid var(--hairline); border-radius: 16px; background: var(--panel);
+    padding: 60px 48px; text-align: center;
+  }
+  .contact-box h2 { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 600; margin-bottom: 14px; letter-spacing: -0.01em; }
+  .contact-box p { color: var(--text-dim); margin-bottom: 28px; font-size: 14.5px; }
+
+  footer {
+    padding: 30px 48px; border-top: 1px solid var(--hairline);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-faint);
+  }
+
+  @media (max-width: 900px) {
+    .hero { flex-direction: column; padding-top: 140px; }
+    .nav-links { display: none; }
+    .project-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .edu-card { flex-direction: column; }
+    .edu-right { align-items: flex-start; text-align: left; }
+    .edu-tags { justify-content: flex-start; }
+  }
+
+  main { animation: pageFadeIn 0.5s ease both; }
+  @keyframes pageFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    main { animation: none; }
+    .project-card { transition: none !important; }
+  }
+</style>
+
+<body>
+<div class="bg-grid"></div>
+<nav>
+  <a href="index.html" class="logo">DHRUV<span>.</span>PRAJAPATI</a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#experience">Experience</a>
+    <a href="index.html#education">Education</a>
+    <a href="index.html#skills">Skills</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+  <a href="index.html#contact" class="nav-cta">Get in touch</a>
+</nav>
+<main style="padding-top:130px;">
+  <div style="max-width:1200px; margin:0 auto 50px; padding:0 48px;">
+    <a href="index.html" class="mono" style="display:inline-block; font-size:12px; color:var(--text-dim); text-decoration:none; border:1px solid var(--hairline); padding:8px 14px; border-radius:6px; margin-bottom:24px;">← Back to portfolio</a>
+    <p class="mono" style="font-size:12px; color:var(--accent); letter-spacing:0.12em; margin-bottom:10px;">ALL PROJECTS</p>
+    <h1 class="display" style="font-size:clamp(32px,4.5vw,46px); font-weight:600; letter-spacing:-0.02em;">Projects</h1>
+  </div>
+  <section id="work">
+    <div class="section-head">
+      <span class="section-tag">01</span>
+      <h2>Selected work</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="project-grid">
+      <a class="project-card" href="projects/insulator-analysis.html" target="_blank" rel="noopener">
+        <span class="tag">PG&E · ANSYS · SOLIDWORKS</span>
+        <h3>Numerical Analysis of Substation Post Insulators</h3>
+        <p>Coupled CFD, electromagnetic, and structural sims across 4 loading conditions on 230kV Lapp porcelain insulators.</p>
+      </a>
+      <a class="project-card" href="projects/materials-characterization.html" target="_blank" rel="noopener">
+        <span class="tag">PG&E · SEM · ROOT CAUSE</span>
+        <h3>Materials Characterization</h3>
+        <p>Microscopy investigations on 5+ failed utility assets to identify fracture mechanisms and root cause.</p>
+      </a>
+      <a class="project-card" href="projects/moisture-drying-model.html" target="_blank" rel="noopener">
+        <span class="tag">PG&E · MATLAB</span>
+        <h3>Residual Moisture Drying Model</h3>
+        <p>Transient MATLAB evaporation model across a 14.7–1 psia range, with temperature/humidity sensitivity studies.</p>
+      </a>
+      <a class="project-card" href="projects/heat-sink-analysis.html" target="_blank" rel="noopener">
+        <span class="tag">MKS · CFD · TEST BENCH</span>
+        <h3>Liquid-Cooled Heat Sink Analysis</h3>
+        <p>Characterized a microchannel heat sink for a 5kW pulsed-DC generator, contributing to a 25% efficiency gain.</p>
+      </a>
+      <a class="project-card" href="projects/reliability-testing.html" target="_blank" rel="noopener">
+        <span class="tag">MKS · LABVIEW · HVAC</span>
+        <h3>Cross-Functional Reliability Testing</h3>
+        <p>Instrumentation and validation across HVAC, liquid-nitrogen, and ALT/HASS/ESS qualification chambers.</p>
+      </a>
+      <a class="project-card" href="projects/vortex-ring-rig.html" target="_blank" rel="noopener">
+        <span class="tag">FAST LAB · PIV · ARDUINO</span>
+        <h3>Vortex-Ring Test Platform</h3>
+        <p>Built a linear-actuator PIV rig to quantify vortex-induced flow and impingement heat transfer in confined geometries.</p>
+      </a>
+    </div>
+  </section>
+  <section id="other-projects">
+    <div class="section-head">
+      <span class="section-tag">04</span>
+      <h2>Other projects</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="project-grid">
+      <a class="project-card" href="projects/silver-connector.html" target="_blank" rel="noopener">
+        <span class="tag">REVERSE ENGINEERING · FEA</span>
+        <h3>Silver Armored Connector</h3>
+        <p>7-part reverse-engineered assembly — full CAD, FEA, and a 3D-printed prototype with a 10% efficiency gain.</p>
+      </a>
+      <a class="project-card" href="projects/catapult-optimization.html" target="_blank" rel="noopener">
+        <span class="tag">FEA · 3D PRINTING</span>
+        <h3>3D-Printed Catapult Optimization</h3>
+        <p>FEA-driven arm design hitting a 320" launch distance at a 626 strength-to-weight ratio.</p>
+      </a>
+      <a class="project-card" href="projects/lunar-lander-simulation.html" target="_blank" rel="noopener">
+        <span class="tag">MATLAB · SIMULATION</span>
+        <h3>Lunar Lander Simulation</h3>
+        <p>Physics-based descent sim with real thrust/fuel dynamics, landing trajectory within 5% error.</p>
+      </a>
+      <a class="project-card" href="projects/cad-portfolio.html" target="_blank" rel="noopener">
+        <span class="tag">SOLIDWORKS · GD&T</span>
+        <h3>CAD Portfolio</h3>
+        <p>Tire assembly, battery pack, UGV prototype, and full automotive model with technical drawings.</p>
+      </a>
+      <a class="project-card" href="projects/epitrochoid-analysis.html" target="_blank" rel="noopener">
+        <span class="tag">KINEMATICS</span>
+        <h3>Epitrochoid Mathematical Analysis</h3>
+        <p>Parametric curve modeling applied to gear tooth profiles and rotary engine geometry.</p>
+      </a>
+      <a class="project-card" href="projects/accelerometer-strain-gauge.html" target="_blank" rel="noopener">
+        <span class="tag">SENSORS · DAQ</span>
+        <h3>Accelerometer & Strain Gauge</h3>
+        <p>Piezoelectric and resistive sensor lab work for vibration and structural load measurement.</p>
+      </a>
+      <a class="project-card" href="projects/thermocouple-vi.html" target="_blank" rel="noopener">
+        <span class="tag">LABVIEW</span>
+        <h3>Thermocouple VI</h3>
+        <p>LabVIEW virtual instrument for real-time temperature logging with cold-junction compensation.</p>
+      </a>
+      <a class="project-card" href="projects/pressure-sensor-vi.html" target="_blank" rel="noopener">
+        <span class="tag">LABVIEW · CALIBRATION</span>
+        <h3>Pressure Sensor VI</h3>
+        <p>Multi-point calibrated pressure measurement VI for hydraulic and pneumatic test setups.</p>
+      </a>
+      <a class="project-card" href="projects/mechanical-encoder-led.html" target="_blank" rel="noopener">
+        <span class="tag">MECHATRONICS</span>
+        <h3>Mechanical Encoder LED</h3>
+        <p>Quadrature rotary encoder with LED position/direction feedback for motor control applications.</p>
+      </a>
+    </div>
+  </section>
+
+</main>
+<footer>
+  <span>© 2026 DHRUV PRAJAPATI</span>
+  <span>+1 (520) 390-4462 · ROCHESTER, NY</span>
+</footer>
+</body>
+</html>
